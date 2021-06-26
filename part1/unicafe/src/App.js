@@ -14,14 +14,17 @@ const Statistics = ({good,neutral,bad})=> {
       <div>
         <Header text='Statistics'></Header>
         <table>
-          <Statistic text="good" value={good}></Statistic>
-          <Statistic text="bad" value={bad}></Statistic>
-          <Statistic text="neutral" value={neutral}></Statistic>
-          <Statistic text="average" value={(good-bad)/all}></Statistic>
-          <Statistic text="positive" value={good/all*100}></Statistic>
+          <tbody>
+            <Statistic text="good" value={good}></Statistic>
+            <Statistic text="bad" value={bad}></Statistic>
+            <Statistic text="neutral" value={neutral}></Statistic>
+            <Statistic text="average" value={(good-bad)/all}></Statistic>
+            <Statistic text="positive" value={good/all*100}></Statistic>
+          </tbody>
         </table>
       </div>
     )
+
   }
   return (<div>No feedback given</div>)
 }
