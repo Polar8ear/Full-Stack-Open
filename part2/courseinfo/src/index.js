@@ -17,7 +17,7 @@ const Header = ({ course }) => {
 
 const Content = ({ course }) => {
   return(
-    course.parts.map((part)=><p>{part.name} {part.exercises}</p>)
+    course.parts.map((part)=><p key={part.id}  >{part.name} {part.exercises}</p>)
   )
 }
 const Course = ({course}) => {
