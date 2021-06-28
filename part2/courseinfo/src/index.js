@@ -3,16 +3,17 @@ import ReactDOM from 'react-dom';
 
 const Header = ({ course }) => {
   return (
-    <h1>{course.name}</h1>
+    <h1 key={course.id}>{course.name}</h1>
   )
 }
 
-// const Total = ({ course }) => {
-//   const sum = course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises
-//   return(
-//     <p>Number of exercises {sum}</p>
-//   ) 
-// }
+const Total = ({ course }) => {
+  const sum = course.parts.reduce((total,part)=>total+part.exercises,0)
+  
+  return(
+    <p>Total of {sum} exercises</p>
+  ) 
+}
 
 
 const Content = ({ course }) => {
@@ -25,7 +26,7 @@ const Course = ({course}) => {
     <div>
       <Header course={course}/>
       <Content course={course}/>
-      {/* <Total course={course}/> */}
+      <Total course={course}/>
 
     </div>
 
