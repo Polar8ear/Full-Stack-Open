@@ -9,13 +9,15 @@ const Input = ({text,inputVariable,handleChange}) =>{
   )
 }
 
-const Countries = ({countriesToShow,handleClick}) =>{
-
-  
-
+const Countries = ({countriesToShow,handleClick,weather}) =>{
   if(countriesToShow.length===1){
     const countryToShow=countriesToShow[0]
-    return(<Details countryToShow={countryToShow}/>)
+    return(
+      <div>
+        <Details countryToShow={countryToShow}/>
+        <Weather cityToShow={countryToShow.capital} weather={weather}/>
+      </div>
+      )
   }
 
   else if (countriesToShow.length<=10){
@@ -55,19 +57,46 @@ const Details = ({countryToShow}) =>{
 
 }
 
+const Weather = ({cityToShow,weather}) =>{
+  if(weather!==null){
+    console.log(weather);
+    return(
+      <div>
+        <h2>Weather in {cityToShow}</h2>
+        <p><b>Temperature:{weather.current.temperature}°C</b>{}</p>
+        <img src={weather.current.weather_icons[0]} alt={`Weather icon for ${cityToShow}`} />
+        <p><b>Wind:</b>{weather.current.wind_speed}</p>
+      </div>
+    )
+  }
+  return(null) 
+}
+
 function App() {
   const [filter,setFilter] = useState("mala")
   const [countries,setCountries] = useState([])
-  const [countriesToShow,setCountriesToShow] = useState([])
+  const [countriesToShow,setCountriesToShow] = useState([]) 
+  const [weather,setWeather] = useState() 
 
 
   useEffect(()=>{
-    console.log("Accesing the website again")
     axios.get("https://restcountries.eu/rest/v2/all")
          .then(response=>{
           setCountries(response.data)
          })
   },[])
+
+  const capital = (countriesToShow.length===1)?countriesToShow[0].capital:null
+
+  useEffect(()=>{
+    const api_key = process.env.REACT_APP_API_KEY
+    if(capital){
+      axios.get(`http://api.weatherstack.com/current?access_key=${api_key}&query=${capital.replace(" ","%20")}`)
+            .then(response=>{
+              setWeather(response.data)
+            })
+    }
+  },[capital])
 
   const handleFilterChange = (event) =>{
     const val = event.target.value
@@ -86,10 +115,7 @@ function App() {
     
     const copyCountriesToShow = [...countriesToShow]
     copyCountriesToShow[e.target.id].show=!countriesToShow[e.target.id].show
-    console.log(e.target.id,copyCountriesToShow[e.target.id].show);
     setCountriesToShow(copyCountriesToShow)
-    console.log(e.target.id,countriesToShow[e.target.id].show);
-
   }
 
 
@@ -97,7 +123,7 @@ function App() {
     <div>
       <Input text="Find countries" inputVariable={filter} handleChange={handleFilterChange}/>
 
-      <Countries countriesToShow={countriesToShow} handleClick={toggleShow}/>
+      <Countries countriesToShow={countriesToShow} handleClick={toggleShow} weather={weather}/>
     </div>
   );
 }
