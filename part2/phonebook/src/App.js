@@ -77,19 +77,26 @@ const App = () => {
 
   const addNewPerson = (event) =>{
     event.preventDefault()
-    if(!persons.some((person)=>newName===person.name)){
-      const newPerson ={name:newName,number:newNumber}
-      console.log(newPerson)
-      setNewName("")
-      setNewNumber("")
+    const newPerson ={name:newName,number:newNumber}
+    if(!persons.some((person)=>newName.toUpperCase()===person.name.toUpperCase())){
       webService.update(newPerson)
            .then(data=>{
               setPersons(persons.concat(data))
            })
     }
     else{
-      window.alert(`${newName} is already added to the phonebook`)
+      if(window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)){
+        const existingPersonIndex = persons.findIndex(person=>person.name.toUpperCase()===newName.toUpperCase())
+        const copyPersons=[...persons]
+        webService.changePhoneNum(persons[existingPersonIndex].id,newPerson)
+                  .then(data=>{
+                    copyPersons[existingPersonIndex]=newPerson
+                    setPersons(copyPersons)
+                  })
+      }
     }
+    setNewName("")
+    setNewNumber("")
   }
 
   const handleDelete = (event,person) =>{

@@ -14,6 +14,11 @@ const remove = (id) =>{
     axios.delete(`${URL}/${id}`)
 }
 
-const persons={getAll,update,remove}
+const changePhoneNum = (id,changedPerson) =>{
+    return axios.put(`${URL}/${id}`,changedPerson).then(response=>response.data)
+
+}
+
+const persons={getAll,update,remove,changePhoneNum}
 
 export default persons
