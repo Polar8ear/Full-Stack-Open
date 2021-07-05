@@ -11,25 +11,13 @@ const Filter = ({filter,setFilter}) => {
   )
 }
 
-const PersonsForm = ({persons,setPersons,newName,setNewName,newNumber,setNewNumber}) =>{ 
-
-  const addNewPerson = (event) =>{
-    event.preventDefault()
-    if(!persons.some((person)=>newName===person.name)){
-      setPersons(persons.concat({name:newName,number:newNumber}))
-      setNewName("")
-      setNewNumber("")
-    }
-    else{
-      window.alert(`${newName} is already added to the phonebook`)
-    }
-  } 
+const PersonsForm = ({persons,setPersons,newName,setNewName,newNumber,setNewNumber,handleSubmit}) =>{  
 
   return(
     <div>
       <h3>Add a new</h3>
 
-      <form onSubmit={addNewPerson}>
+      <form onSubmit={handleSubmit}>
         <div>
           name: <input value={newName} onChange={(event)=>setNewName(event.target.value)} />
         </div>
@@ -81,13 +69,33 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [filter, setFilter] = useState('');
 
+  const URL = "http://localhost:3001/persons"
+
   useEffect(()=>{
-    axios.get('http://localhost:3001/persons')
+    axios.get(URL)
          .then((response)=>{
 
             setPersons(response.data)
           })
   },[])
+
+  const addNewPerson = (event) =>{
+    event.preventDefault()
+    if(!persons.some((person)=>newName===person.name)){
+      const newPerson ={name:newName,number:newNumber}
+      setNewName("")
+      setNewNumber("")
+      axios.post(URL,newPerson)
+           .then(response=>{
+              setPersons(persons.concat(response.data))
+           })
+
+      
+    }
+    else{
+      window.alert(`${newName} is already added to the phonebook`)
+    }
+  }
 
   return (
     <div>
@@ -97,7 +105,8 @@ const App = () => {
 
       <PersonsForm persons={persons} setPersons={setPersons} 
                newName={newName} setNewName={setNewName} 
-               newNumber={newNumber} setNewNumber={setNewNumber}/>
+               newNumber={newNumber} setNewNumber={setNewNumber}
+               handleSubmit={addNewPerson}/>
 
       <Details persons={persons} filter={filter}/>
       

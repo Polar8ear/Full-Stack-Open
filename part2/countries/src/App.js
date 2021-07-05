@@ -22,7 +22,7 @@ const Countries = ({countriesToShow,handleClick,weather}) =>{
 
   else if (countriesToShow.length<=10){
     return(
-      countriesToShow.map((country,index)=><Country key={country.alpha2code} index={index} country={country} handleClick={handleClick}/>)
+      countriesToShow.map((country,index)=><Country key={country.alpha2Code}  index={index} country={country} handleClick={handleClick}/>)
     )
   } 
 
@@ -33,7 +33,7 @@ const Countries = ({countriesToShow,handleClick,weather}) =>{
 
 const Country = ({country,index,handleClick}) =>{ 
   return(
-    <div >
+    <div>
       <p>{country.name}</p>
       <button onClick={handleClick} id={index}>{country.show?"Close":"Show"}</button>    
       {country.show?<Details countryToShow={country}/>:null}
@@ -65,7 +65,7 @@ const Weather = ({cityToShow,weather}) =>{
         <h2>Weather in {cityToShow}</h2>
         <p><b>Temperature:{weather.current.temperature}°C</b>{}</p>
         <img src={weather.current.weather_icons[0]} alt={`Weather icon for ${cityToShow}`} />
-        <p><b>Wind:</b>{weather.current.wind_speed}</p>
+        <p><b>Wind:</b>{weather.current.wind_speed}mph</p>
       </div>
     )
   }
@@ -76,7 +76,7 @@ function App() {
   const [filter,setFilter] = useState("mala")
   const [countries,setCountries] = useState([])
   const [countriesToShow,setCountriesToShow] = useState([]) 
-  const [weather,setWeather] = useState() 
+  const [weather,setWeather] = useState(null) 
 
 
   useEffect(()=>{
