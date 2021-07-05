@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from 'react'
-import axios from "axios";
+import webService from "./services/persons"
 
 const Filter = ({filter,setFilter}) => {
   return(
@@ -69,25 +69,21 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [filter, setFilter] = useState('');
 
-  const URL = "http://localhost:3001/persons"
-
   useEffect(()=>{
-    axios.get(URL)
-         .then((response)=>{
-
-            setPersons(response.data)
-          })
+    webService.getAll()
+         .then(data=>setPersons(data))
   },[])
 
   const addNewPerson = (event) =>{
     event.preventDefault()
     if(!persons.some((person)=>newName===person.name)){
       const newPerson ={name:newName,number:newNumber}
+      console.log(newPerson)
       setNewName("")
       setNewNumber("")
-      axios.post(URL,newPerson)
-           .then(response=>{
-              setPersons(persons.concat(response.data))
+      webService.update(newPerson)
+           .then(data=>{
+              setPersons(persons.concat(data))
            })
 
       
