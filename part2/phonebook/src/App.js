@@ -34,7 +34,7 @@ const PersonsForm = ({persons,setPersons,newName,setNewName,newNumber,setNewNumb
   )
 }
 
-const Details = ({persons,filter}) =>{
+const Details = ({persons,filter,handleDelete}) =>{
   const personsToShow = !filter
   ? persons
   : persons.filter((person)=>{
@@ -44,10 +44,11 @@ const Details = ({persons,filter}) =>{
         }
       )
   
+  
   const showDetails = (person) => {
     return(
       <div key={person.name}>
-        {person.name} {person.number}
+        {person.name} {person.number} <button onClick={(event)=>handleDelete(event,person)}>Delete</button>
       </div>
     )
   }
@@ -85,13 +86,19 @@ const App = () => {
            .then(data=>{
               setPersons(persons.concat(data))
            })
-
-      
     }
     else{
       window.alert(`${newName} is already added to the phonebook`)
     }
   }
+
+  const handleDelete = (event,person) =>{
+    if(window.confirm(`Do you want to delete ${person.name}`)){
+      webService.remove(person.id)
+      setPersons(persons.filter(existingPerson=>existingPerson.id!==person.id))
+    }
+  }
+
 
   return (
     <div>
@@ -104,7 +111,7 @@ const App = () => {
                newNumber={newNumber} setNewNumber={setNewNumber}
                handleSubmit={addNewPerson}/>
 
-      <Details persons={persons} filter={filter}/>
+      <Details persons={persons} filter={filter} handleDelete={handleDelete}/>
       
     </div>
   )

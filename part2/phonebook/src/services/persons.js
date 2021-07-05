@@ -10,6 +10,10 @@ const update = (newPerson) =>{
     return axios.post(URL,newPerson).then(response=>response.data)
 }
 
-const persons={getAll,update}
+const remove = (id) =>{
+    axios.delete(`${URL}/${id}`)
+}
+
+const persons={getAll,update,remove}
 
 export default persons
