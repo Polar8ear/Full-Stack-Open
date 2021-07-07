@@ -117,11 +117,6 @@ const App = () => {
     if(window.confirm(`Do you want to delete ${person.name}`)){
       dataService.remove(person.id)
                  .then( setPersons(persons.filter(existingPerson=>existingPerson.id!==person.id) ) )
-                 .catch(()=>{
-                   console.log("catched error");
-                   setNotification({status:"error",message:`Information of ${person.name} has already been removed from the server`})
-                   setTimeout(()=>setNotification(null),5000)
-                 })
     }
   }
 
