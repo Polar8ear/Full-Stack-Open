@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from 'react'
-import webService from "./services/persons"
+import dataService from "./services/persons"
 
 const Filter = ({filter,setFilter}) => {
   return(
@@ -61,7 +61,14 @@ const Details = ({persons,filter,handleDelete}) =>{
   )
 }
 
-
+const Message = ({notification}) =>{
+  if(notification===null){
+    return null
+  }
+  return(
+    <div className={`message ${notification.status}`}>{notification.message}</div>
+  )
+}
 
 
 const App = () => {
@@ -69,40 +76,52 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [filter, setFilter] = useState('');
+  const [notification, setNotification] = useState(null);
 
   useEffect(()=>{
-    webService.getAll()
+    dataService.getAll()
          .then(data=>setPersons(data))
   },[])
 
   const addNewPerson = (event) =>{
     event.preventDefault()
     const newPerson ={name:newName,number:newNumber}
-    if(!persons.some((person)=>newName.toUpperCase()===person.name.toUpperCase())){
-      webService.update(newPerson)
-           .then(data=>{
-              setPersons(persons.concat(data))
-           })
-    }
-    else{
-      if(window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)){
-        const existingPersonIndex = persons.findIndex(person=>person.name.toUpperCase()===newName.toUpperCase())
-        const copyPersons=[...persons]
-        webService.changePhoneNum(persons[existingPersonIndex].id,newPerson)
-                  .then(data=>{
-                    copyPersons[existingPersonIndex]=newPerson
-                    setPersons(copyPersons)
-                  })
-      }
-    }
     setNewName("")
     setNewNumber("")
+    if(!persons.some((person)=>newPerson.name.toUpperCase()===person.name.toUpperCase())){
+      dataService.update(newPerson)
+           .then(data=>{
+              setPersons(persons.concat(data))
+              setNotification({status:"confirmation",message:`Added ${newPerson.name}`})
+              setTimeout(()=>setNotification(null),5000)
+           })
+    } 
+    else if(window.confirm(`${newPerson.name} is already added to the phonebook, replace the old number with a new one?`)){
+        const existingPersonIndex = persons.findIndex(person=>person.name.toUpperCase()===newName.toUpperCase())
+        const copyPersons=[...persons]
+        dataService.changePhoneNum(persons[existingPersonIndex].id,newPerson)
+                  .then(data=>{
+                    copyPersons[existingPersonIndex]=data
+                    setPersons(copyPersons)
+                    setNotification({status:"confirmation",message:`Changed ${newPerson.name}'s number`})
+                    setTimeout(()=>setNotification(null),3000)
+                  })
+                  .catch(()=>{
+                    setNotification({status:"error",message:`Information of ${newPerson.name} has already been removed from the server`})
+                    setTimeout(()=>setNotification(null),3000)
+                  })
+    }
   }
 
   const handleDelete = (event,person) =>{
     if(window.confirm(`Do you want to delete ${person.name}`)){
-      webService.remove(person.id)
-      setPersons(persons.filter(existingPerson=>existingPerson.id!==person.id))
+      dataService.remove(person.id)
+                 .then( setPersons(persons.filter(existingPerson=>existingPerson.id!==person.id) ) )
+                 .catch(()=>{
+                   console.log("catched error");
+                   setNotification({status:"error",message:`Information of ${person.name} has already been removed from the server`})
+                   setTimeout(()=>setNotification(null),5000)
+                 })
     }
   }
 
@@ -110,7 +129,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Message notification={notification}/>
       <Filter filter={filter} setFilter={setFilter}/>
 
       <PersonsForm persons={persons} setPersons={setPersons} 

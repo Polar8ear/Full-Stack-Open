@@ -11,7 +11,7 @@ const update = (newPerson) =>{
 }
 
 const remove = (id) =>{
-    axios.delete(`${URL}/${id}`)
+    return axios.delete(`${URL}/${id}`)
 }
 
 const changePhoneNum = (id,changedPerson) =>{
