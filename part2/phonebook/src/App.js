@@ -89,7 +89,7 @@ const App = () => {
     setNewName("")
     setNewNumber("")
     if(!persons.some((person)=>newPerson.name.toUpperCase()===person.name.toUpperCase())){
-      dataService.update(newPerson)
+      dataService.addPerson(newPerson)
            .then(data=>{
               setPersons(persons.concat(data))
               setNotification({status:"confirmation",message:`Added ${newPerson.name}`})

@@ -6,7 +6,7 @@ const getAll = () =>{
     return axios.get(URL).then(response=>response.data)
 }
 
-const update = (newPerson) =>{
+const addPerson = (newPerson) =>{
     return axios.post(URL,newPerson).then(response=>response.data)
 }
 
@@ -19,6 +19,6 @@ const changePhoneNum = (id,changedPerson) =>{
 
 }
 
-const persons={getAll,update,remove,changePhoneNum}
+const persons={getAll,addPerson,remove,changePhoneNum}
 
 export default persons
