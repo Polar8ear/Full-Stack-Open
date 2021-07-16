@@ -46,11 +46,14 @@ const Details = ({persons,filter,handleDelete}) =>{
   
   
   const showDetails = (person) => {
-    return(
-      <div key={person.name}>
-        {person.name} {person.number} <button onClick={(event)=>handleDelete(event,person)}>Delete</button>
-      </div>
-    )
+    if(person){
+      return(
+        <div key={person.name}>
+          {person.name} {person.number} <button onClick={(event)=>handleDelete(event,person)}>Delete</button>
+        </div>
+      )
+    }
+    return null
   }
 
   return(
@@ -83,6 +86,13 @@ const App = () => {
          .then(data=>setPersons(data))
   },[])
 
+  const showNotification = (status,message,seconds) =>{
+    setNotification({status,message})
+    setTimeout(() => {
+      setNotification(null)
+    }, seconds);
+  }
+
   const addNewPerson = (event) =>{
     event.preventDefault()
     const newPerson ={name:newName,number:newNumber}
@@ -90,11 +100,13 @@ const App = () => {
     setNewNumber("")
     if(!persons.some((person)=>newPerson.name.toUpperCase()===person.name.toUpperCase())){
       dataService.addPerson(newPerson)
-           .then(data=>{
-              setPersons(persons.concat(data))
-              setNotification({status:"confirmation",message:`Added ${newPerson.name}`})
-              setTimeout(()=>setNotification(null),5000)
-           })
+                 .then(data=>{
+                      setPersons(persons.concat(data))
+                      showNotification('confirmation',`Added ${data.name}`,3000)
+                 })
+                 .catch(error=>{
+                        showNotification('error',error.response.data.error,3000)
+                 })       
     } 
     else if(window.confirm(`${newPerson.name} is already added to the phonebook, replace the old number with a new one?`)){
         const existingPersonIndex = persons.findIndex(person=>person.name.toUpperCase()===newName.toUpperCase())
@@ -103,20 +115,20 @@ const App = () => {
                   .then(data=>{
                     copyPersons[existingPersonIndex]=data
                     setPersons(copyPersons)
-                    setNotification({status:"confirmation",message:`Changed ${newPerson.name}'s number`})
-                    setTimeout(()=>setNotification(null),3000)
+                    showNotification('confirmation',`Changed ${newPerson.name}'s number`,3000)
                   })
-                  .catch(()=>{
-                    setNotification({status:"error",message:`Information of ${newPerson.name} has already been removed from the server`})
-                    setTimeout(()=>setNotification(null),3000)
+                  .catch(error=>{
+                    showNotification('error',error.response.data.error,3000)
                   })
     }
   }
 
   const handleDelete = (event,person) =>{
+    event.preventDefault()
     if(window.confirm(`Do you want to delete ${person.name}`)){
       dataService.remove(person.id)
                  .then( setPersons(persons.filter(existingPerson=>existingPerson.id!==person.id) ) )
+                 .catch(error=>showNotification('error',error.response.data.error,3000))
     }
   }
 

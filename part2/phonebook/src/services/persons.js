@@ -7,11 +7,12 @@ const getAll = () =>{
 }
 
 const addPerson = (newPerson) =>{
-    return axios.post(URL,newPerson).then(response=>response.data)
+    return axios.post(URL,newPerson)
+                .then(response=>response.data)
 }
 
 const remove = (id) =>{
-    return axios.delete(`${URL}/${id}`)
+    return axios.delete(`${URL}/${id}`).then(response=>response.data)
 }
 
 const changePhoneNum = (id,changedPerson) =>{
