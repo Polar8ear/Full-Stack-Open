@@ -9,7 +9,7 @@ blogsRouter.get('/', (request, response) => {
       })
 })
   
-blogRouter.post('/', (request, response) => {
+blogsRouter.post('/', (request, response) => {
     const blog = new Blog(request.body)
   
     blog
@@ -19,4 +19,4 @@ blogRouter.post('/', (request, response) => {
       })
 })
 
-module.exports = notesRouter
+module.exports = blogsRouter
