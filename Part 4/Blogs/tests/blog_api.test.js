@@ -24,6 +24,11 @@ describe('When some blogs is saved in DB initially',() => {
 
     expect(response.body).toHaveLength(helper.initialNotes.length)
   })
+
+  test('blogs have defined id property', async () => {
+    const blogsAtLast = await helper.blogsInDB()
+    expect(blogsAtLast.map(blog => blog.id)).toBeDefined()
+  })
 })
 
 
