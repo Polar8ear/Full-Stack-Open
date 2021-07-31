@@ -5,9 +5,15 @@ const logger = require('../utils/logger')
 const MONGODB_URI = config.MONGODB_URI
 
 const blogSchema = new mongoose.Schema({
-  title: String,
+  title: {
+    type:String,
+    required:true
+  },
   author: String,
-  url: String,
+  url: {
+    type:String,
+    required:true
+  },
   likes: {
     type:Number,
     default:0
