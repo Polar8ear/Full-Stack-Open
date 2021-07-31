@@ -21,7 +21,7 @@ describe('When some blogs is saved in DB initially',() => {
     const response = await api
       .get('/api/blogs')
       .expect(200)
-  
+
     expect(response.body).toHaveLength(helper.initialNotes.length)
   })
 })
