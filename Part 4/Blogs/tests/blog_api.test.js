@@ -69,6 +69,34 @@ describe('When some blogs is saved in DB initially',() => {
     const blogAdded = blogsAtEnd.find(blog => blog.title===newBlog.title)
     expect(blogAdded.likes).toBe(0)
   })
+
+  test('blog missing title or url won\'t be accepted', async () => {
+    const newBlogWithoutTitle = {
+      author: 'test author',
+      url: 'https://test.com/',
+      likes: 1
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlogWithoutTitle)
+      .expect(400)
+
+    const newBlogWithoutURL = {
+      title: 'new blog for testing',
+      author: 'test author',
+      likes: 2
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlogWithoutURL)
+      .expect(400)
+
+    const blogs = await helper.blogsInDB()
+    expect(blogs).not.toContainEqual(newBlogWithoutTitle)
+    expect(blogs).not.toContainEqual(newBlogWithoutURL)
+  })
 })
 
 
