@@ -26,8 +26,29 @@ describe('When some blogs is saved in DB initially',() => {
   })
 
   test('blogs have defined id property', async () => {
-    const blogsAtLast = await helper.blogsInDB()
-    expect(blogsAtLast.map(blog => blog.id)).toBeDefined()
+    const blogsAtEnd = await helper.blogsInDB()
+    expect(blogsAtEnd.map(blog => blog.id)).toBeDefined()
+  })
+
+  test('blog can be posted successfully', async () => {
+    const newBlog = {
+      title: 'new blog for testing',
+      author: 'test author',
+      url: 'https://test.com/',
+      likes: 1000,
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDB()
+    expect(blogsAtEnd).toHaveLength(helper.initialNotes.length+1)
+
+    const titles = blogsAtEnd.map(blog => blog.title)
+    expect(titles).toContain(newBlog.title)
   })
 })
 
