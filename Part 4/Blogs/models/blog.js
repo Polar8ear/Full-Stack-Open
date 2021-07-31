@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const config = require('../utils/config')
 const logger = require('../utils/logger')
 
-const MONGODB_URI = config.MONGODB_URI
+const BLOG_MONGODB_URI = config.BLOG_MONGODB_URI
 
 const blogSchema = new mongoose.Schema({
   title: {
@@ -29,9 +29,10 @@ blogSchema.set('toJSON', {
 })
 
 mongoose
-  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })  .then(() => logger.info(`Connected to ${MONGODB_URI}`))
+  .connect(BLOG_MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+  .then(() => logger.info(`Connected to ${BLOG_MONGODB_URI}`))
   .catch(error => {
-    logger.error(`error connecting to ${MONGODB_URI}`)
+    logger.error(`error connecting to ${BLOG_MONGODB_URI}`)
     logger.error(error)
   })
 
