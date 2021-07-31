@@ -50,6 +50,25 @@ describe('When some blogs is saved in DB initially',() => {
     const titles = blogsAtEnd.map(blog => blog.title)
     expect(titles).toContain(newBlog.title)
   })
+
+  test('like property is defaulted to 0 if absence', async () => {
+    const newBlog = {
+      title: 'new blog for testing',
+      author: 'test author',
+      url: 'https://test.com/'
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDB()
+
+    const blogAdded = blogsAtEnd.find(blog => blog.title===newBlog.title)
+    expect(blogAdded.likes).toBe(0)
+  })
 })
 
 
