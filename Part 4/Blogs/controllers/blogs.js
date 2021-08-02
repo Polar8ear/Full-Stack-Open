@@ -26,9 +26,9 @@ blogsRouter.put('/:id', async (request, response) => {
 
   await Blog.findByIdAndUpdate(id, updatedInfo, { new:true, runValidators:true },
     (error,document) => {
-      error
-        ?response.status(404).json({ error:error })
-        :response.status(200).json(document._doc)
+      document!==null
+        ?response.status(200).json(document._doc)
+        :response.status(404).json({ error:`Data with id:${id} is not found` })
     })
 })
 
