@@ -22,7 +22,7 @@ describe('When some blogs is saved in DB initially',() => {
       .get('/api/blogs')
       .expect(200)
 
-    expect(response.body).toHaveLength(helper.initialNotes.length)
+    expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
   test('blogs have defined id property', async () => {
@@ -45,7 +45,7 @@ describe('When some blogs is saved in DB initially',() => {
       .expect('Content-Type', /application\/json/)
 
     const blogsAtEnd = await helper.blogsInDB()
-    expect(blogsAtEnd).toHaveLength(helper.initialNotes.length+1)
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length+1)
 
     const titles = blogsAtEnd.map(blog => blog.title)
     expect(titles).toContain(newBlog.title)
