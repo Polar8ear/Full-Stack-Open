@@ -1,8 +1,4 @@
 const mongoose = require('mongoose')
-const config = require('../utils/config')
-const logger = require('../utils/logger')
-
-const BLOG_MONGODB_URI = config.BLOG_MONGODB_URI
 
 const blogSchema = new mongoose.Schema({
   title: {
@@ -27,13 +23,5 @@ blogSchema.set('toJSON', {
     delete returnedObject.__v
   }
 })
-
-mongoose
-  .connect(BLOG_MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
-  .then(() => logger.info(`Connected to ${BLOG_MONGODB_URI}`))
-  .catch(error => {
-    logger.error(`error connecting to ${BLOG_MONGODB_URI}`)
-    logger.error(error)
-  })
 
 module.exports = mongoose.model('Blog', blogSchema)
