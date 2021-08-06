@@ -2,12 +2,17 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const helper = require('../utils/test_helper')
 
 
 const api = supertest(app)
+var token
 
 beforeEach(async () => {
+  await User.deleteMany({})
+  token=await helper.getValidTokenFrom(api)
+
   await Blog.deleteMany({})
 
   const blogObjects = helper.initialBlogs
@@ -15,6 +20,7 @@ beforeEach(async () => {
   const promiseArray = blogObjects.map(blog => blog.save())
   await Promise.all(promiseArray)
 })
+
 
 describe('When some blogs is saved in DB initially',() => {
   test('correct number of blogs is returned', async () => {
@@ -40,6 +46,7 @@ describe('When some blogs is saved in DB initially',() => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization',`bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -61,6 +68,7 @@ describe('When some blogs is saved in DB initially',() => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('Authorization',`bearer ${token}`)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
@@ -80,6 +88,7 @@ describe('When some blogs is saved in DB initially',() => {
     await api
       .post('/api/blogs')
       .send(newBlogWithoutTitle)
+      .set('Authorization',`bearer ${token}`)
       .expect(400)
 
     const newBlogWithoutURL = {
@@ -91,6 +100,7 @@ describe('When some blogs is saved in DB initially',() => {
     await api
       .post('/api/blogs')
       .send(newBlogWithoutURL)
+      .set('Authorization',`bearer ${token}`)
       .expect(400)
 
     const blogs = await helper.blogsInDB()
