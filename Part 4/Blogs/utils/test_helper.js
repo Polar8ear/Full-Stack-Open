@@ -63,9 +63,27 @@ const usersInDB = async () => {
   return users.map(user => user.toJSON())
 }
 
+const getValidTokenFrom = async api => {
+  const testUser = {
+    username:'testAccount',
+    password:'testPassword'
+  }
+
+  await api
+    .post('/api/users')
+    .send({ name:'testName',...testUser })
+
+  const response = await api
+    .post('/api/login')
+    .send(testUser)
+
+  return response.body.token
+}
+
 module.exports = {
   initialBlogs,
   blogsInDB,
   initialUsers,
-  usersInDB
+  usersInDB,
+  getValidTokenFrom
 }
