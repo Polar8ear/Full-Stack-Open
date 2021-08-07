@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
+import loginService from './services/login'
 
 const LoginForm = (props) => {
   return(
@@ -8,7 +9,7 @@ const LoginForm = (props) => {
       <h1>Login to application</h1>
       <form onSubmit={props.handleLogin}>
         <div>
-          <label for="Username">Username</label>
+          <label>Username</label>
           <input 
             type="text" 
             value={props.username}
@@ -16,7 +17,7 @@ const LoginForm = (props) => {
             onChange={(event) => props.setUsername(event.target.value)}/>
         </div>
         <div>
-          <label for="Password">Password</label>
+          <label>Password</label>
           <input
             type="password" 
             value={props.password}
@@ -29,10 +30,11 @@ const LoginForm = (props) => {
   )
 }
 
-const Blogs = ({blogs}) => {
+const Blogs = (props) => {
+  const { blogs }  = props
   return(
     <div>
-      <h2>blogs</h2>
+      {props.children}
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
         )}
@@ -53,9 +55,25 @@ const App = () => {
     )  
   }, [])
 
-  const handleLogin = event => {
+  // useEffect(() => {
+  //   const userDetails = window.localStorage.getItem('user')
+
+  //   if(userDetails){
+  //   setUser(JSON.parse(userDetails))
+  //   }
+  // },[])
+
+  const handleLogin = async event => {
     event.preventDefault()
-    console.log('logging in')
+    const credentials = {
+      username,
+      password
+    }
+    const userDetails = await loginService.login(credentials)
+    // window.localStorage.setItem('user',JSON.stringify(userDetails))
+    setUser(userDetails)
+    setUsername('')
+    setPassword('')
   }
 
   const props = {
@@ -63,17 +81,18 @@ const App = () => {
     setUsername,
     password,
     setPassword,
-    handleLogin
+    handleLogin,
   }
 
   return (
     <div>
       {!user
       ?<LoginForm {...props}/>
-      :<Blogs blogs={blogs}/>
+      :<Blogs blogs={blogs}>
+        <h2>Blogs</h2>
+        <p>{user.name} is logged in</p>
+      </Blogs>
       }
-
-      
     </div>
   )
 }
