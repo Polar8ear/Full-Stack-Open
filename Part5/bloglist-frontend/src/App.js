@@ -55,13 +55,13 @@ const App = () => {
     )  
   }, [])
 
-  // useEffect(() => {
-  //   const userDetails = window.localStorage.getItem('user')
+  useEffect(() => {
+    const userDetails = window.localStorage.getItem('user')
 
-  //   if(userDetails){
-  //   setUser(JSON.parse(userDetails))
-  //   }
-  // },[])
+    if(userDetails){
+    setUser(JSON.parse(userDetails))
+    }
+  },[])
 
   const handleLogin = async event => {
     event.preventDefault()
@@ -70,10 +70,15 @@ const App = () => {
       password
     }
     const userDetails = await loginService.login(credentials)
-    // window.localStorage.setItem('user',JSON.stringify(userDetails))
+    window.localStorage.setItem('user',JSON.stringify(userDetails))
     setUser(userDetails)
     setUsername('')
     setPassword('')
+  }
+  
+  const handleLogout = () => {
+    setUser(null)
+    window.localStorage.removeItem('user')
   }
 
   const props = {
@@ -91,6 +96,7 @@ const App = () => {
       :<Blogs blogs={blogs}>
         <h2>Blogs</h2>
         <p>{user.name} is logged in</p>
+        <button onClick={handleLogout}>Logout</button>
       </Blogs>
       }
     </div>
