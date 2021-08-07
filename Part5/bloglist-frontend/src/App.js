@@ -88,17 +88,19 @@ const App = () => {
     setPassword,
     handleLogin,
   }
-
-  return (
+  if(!user){
+    return (
+      <div>
+        <LoginForm {...props}/>
+      </div>
+    )
+  }
+  return(
     <div>
-      {!user
-      ?<LoginForm {...props}/>
-      :<Blogs blogs={blogs}>
-        <h2>Blogs</h2>
-        <p>{user.name} is logged in</p>
-        <button onClick={handleLogout}>Logout</button>
-      </Blogs>
-      }
+      <h2>Blogs</h2>
+      <p>{user.name} is logged in</p>
+      <button onClick={handleLogout}>Logout</button>
+      <Blogs blogs={blogs}/>
     </div>
   )
 }
