@@ -3,30 +3,34 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-const LoginForm = (props) => {
+const LoginForm = ({handleLogin}) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   return(
-    <div>
-      <h1>Login to application</h1>
-      <form onSubmit={props.handleLogin}>
-        <div>
-          <label>Username</label>
-          <input 
-            type="text" 
-            value={props.username}
-            name="Username"
-            onChange={(event) => props.setUsername(event.target.value)}/>
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password" 
-            value={props.password}
-            name="Password"
-            onChange={(event) => props.setPassword(event.target.value)}/>
-        </div>
-        <button type="submit">login</button>
-      </form>
-    </div>
+    <form onSubmit={event=>{
+      handleLogin(event,username,password)
+      setUsername('')
+      setPassword('')  
+      }
+    }>
+      <div>
+        <label>Username</label>
+        <input 
+          type="text" 
+          value={username}
+          name="Username"
+          onChange={(event) => setUsername(event.target.value)}/>
+      </div>
+      <div>
+        <label>Password</label>
+        <input
+          type="password" 
+          value={password}
+          name="Password"
+          onChange={(event) => setPassword(event.target.value)}/>
+      </div>
+      <button type="submit">login</button>
+    </form>
   )
 }
 
@@ -45,8 +49,6 @@ const Blogs = (props) => {
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
 
 
   useEffect(() => {
@@ -63,7 +65,7 @@ const App = () => {
     }
   },[])
 
-  const handleLogin = async event => {
+  const handleLogin = async (event,username,password) => {
     event.preventDefault()
     const credentials = {
       username,
@@ -72,8 +74,6 @@ const App = () => {
     const userDetails = await loginService.login(credentials)
     window.localStorage.setItem('user',JSON.stringify(userDetails))
     setUser(userDetails)
-    setUsername('')
-    setPassword('')
   }
   
   const handleLogout = () => {
@@ -81,17 +81,11 @@ const App = () => {
     window.localStorage.removeItem('user')
   }
 
-  const props = {
-    username,
-    setUsername,
-    password,
-    setPassword,
-    handleLogin,
-  }
   if(!user){
     return (
       <div>
-        <LoginForm {...props}/>
+        <h1>Login to application</h1>
+        <LoginForm handleLogin={handleLogin}/>
       </div>
     )
   }
@@ -100,6 +94,9 @@ const App = () => {
       <h2>Blogs</h2>
       <p>{user.name} is logged in</p>
       <button onClick={handleLogout}>Logout</button>
+
+      <h2>Create new blog</h2>
+      <NewBlog></NewBlog>
       <Blogs blogs={blogs}/>
     </div>
   )
