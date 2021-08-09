@@ -94,12 +94,14 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
+  //load blogs upon starting
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
   }, [])
 
+  //check if there is user data stored in local storage
   useEffect(() => {
     const userDetails = window.localStorage.getItem('user')
 
