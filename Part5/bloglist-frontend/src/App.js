@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './styles/App.css'
 
 const LoginForm = ({handleLogin}) => {
   const [username, setUsername] = useState('')
@@ -31,6 +32,16 @@ const LoginForm = ({handleLogin}) => {
       </div>
       <button type="submit">login</button>
     </form>
+  )
+}
+
+const Notification = ({notification}) => {
+  if(!notification) return null;
+
+  return(
+    <div className={`notification ${notification.style}`}>
+      {notification.text}
+    </div>
   )
 }
 
@@ -93,6 +104,8 @@ const NewBlog = ({handleCreateBlog}) => {
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  const [notification, setNotification] = useState({style:'success',text:'yes'})
+  
 
   //load blogs upon starting
   useEffect(() => {
@@ -135,6 +148,17 @@ const App = () => {
     event.preventDefault()
     const savedBlog = await blogService.create(newBlog)
     setBlogs(blogs.concat(savedBlog))
+    showNotification({
+      style: 'success',
+      text: `a new blog '${savedBlog.title}' by ${savedBlog.author} added `
+    })
+  }
+
+  const showNotification = newNotification => {
+    setNotification(newNotification)
+    setTimeout(() => {
+      setNotification(null)
+    }, 3500);
   }
 
   if(!user){
@@ -147,6 +171,7 @@ const App = () => {
   }
   return(
     <div>
+      <Notification notification={notification}/>
       <h2>Blogs</h2>
       <p>{user.name} is logged in</p>
       <button onClick={handleLogout}>Logout</button>
