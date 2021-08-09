@@ -106,7 +106,9 @@ const App = () => {
     const userDetails = window.localStorage.getItem('user')
 
     if(userDetails){
-    setUser(JSON.parse(userDetails))
+      const parsedUser = JSON.parse(userDetails)
+      setUser(parsedUser)
+      blogService.setToken(parsedUser.token)
     }
   },[])
 
@@ -121,6 +123,7 @@ const App = () => {
 
     window.localStorage.setItem('user',JSON.stringify(userDetails))
     setUser(userDetails)
+    blogService.setToken(userDetails.token)
   }
   
   const handleLogout = () => {
