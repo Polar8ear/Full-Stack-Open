@@ -1,4 +1,4 @@
-import React, { useState, useEffect, } from 'react'
+import React, { useState, useEffect, useRef, useImperativeHandle, } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -101,10 +101,38 @@ const NewBlog = ({handleCreateBlog}) => {
   )
 }
 
+const Togglable = React.forwardRef((props,ref) => {
+  const [visible, setVisible] = useState(false)
+
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '' : 'none' }
+
+  const toggleVisibility = () => {
+    setVisible(!visible)
+  }
+
+  useImperativeHandle(ref, () => {
+    return{toggleVisibility}
+  })
+
+  return (
+    <div>
+      <div style={hideWhenVisible}>
+        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+      </div>
+      <div style={showWhenVisible}>
+        {props.children}
+        <button onClick={toggleVisibility}>cancel</button>
+      </div>
+    </div>
+  )
+})
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
+  const newBlogRef = useRef()
   
 
   //load blogs upon starting
@@ -152,6 +180,7 @@ const App = () => {
 
   const handleCreateBlog = async (event,newBlog) => {
     event.preventDefault()
+    newBlogRef.current.toggleVisibility()
     const savedBlog = await blogService.create(newBlog)
     setBlogs(blogs.concat(savedBlog))
     showNotification({
@@ -180,11 +209,16 @@ const App = () => {
     <div>
       <Notification notification={notification}/>
       <h2>Blogs</h2>
-      <p>{user.name} is logged in</p>
-      <button onClick={handleLogout}>Logout</button>
+      <div >
+        {user.name} is logged in
+        <button onClick={handleLogout}>Logout</button>
+      </div>
 
-      <h2>Create new blog</h2>
-      <NewBlog handleCreateBlog={handleCreateBlog}/>
+      <Togglable buttonLabel='Create New Blog' ref={newBlogRef}>
+        <h2>Create new blog</h2>
+        <NewBlog handleCreateBlog={handleCreateBlog}/>
+      </Togglable>
+
       <Blogs blogs={blogs}/>
     </div>
   )
