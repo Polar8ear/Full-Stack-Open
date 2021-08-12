@@ -104,7 +104,7 @@ const NewBlog = ({handleCreateBlog}) => {
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState({style:'success',text:'yes'})
+  const [notification, setNotification] = useState(null)
   
 
   //load blogs upon starting
@@ -132,11 +132,17 @@ const App = () => {
       username,
       password
     }
-    const userDetails = await loginService.login(credentials)
-
-    window.localStorage.setItem('user',JSON.stringify(userDetails))
-    setUser(userDetails)
-    blogService.setToken(userDetails.token)
+    try {
+      const userDetails = await loginService.login(credentials)
+      window.localStorage.setItem('user',JSON.stringify(userDetails))
+      setUser(userDetails)
+      blogService.setToken(userDetails.token)
+    } catch (error) {
+      showNotification({
+        style: 'error',
+        text : 'Invalid username or password'
+      })
+    }
   }
   
   const handleLogout = () => {
@@ -164,6 +170,7 @@ const App = () => {
   if(!user){
     return (
       <div>
+        <Notification notification={notification}/>
         <h1>Login to application</h1>
         <LoginForm handleLogin={handleLogin}/>
       </div>
