@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useImperativeHandle, } from 'react'
 import Blog from './components/Blog'
+import NewBlog from './components/NewBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './styles/App.css'
@@ -45,59 +46,13 @@ const Notification = ({notification}) => {
   )
 }
 
-const Blogs = (props) => {
-  const { blogs }  = props
+const Blogs = ({ blogs, handleClickView }) => {
   return(
     <div>
-      {props.children}
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleClickView={handleClickView} />
         )}
     </div>
-  )
-}
-
-const NewBlog = ({handleCreateBlog}) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setURL] = useState('')
-
-  return(
-    <form onSubmit={event=>{
-      handleCreateBlog(event,{title,author,url})
-      setTitle('')
-      setAuthor('')
-      setURL('')
-    }}>
-      <div>
-        <label>Title:</label>
-        <input 
-         type="text" 
-         value={title}
-         name="Title"
-         onChange={(event) => setTitle(event.target.value)}/>
-      </div>
-
-      <div>
-        <label>Author:</label>
-        <input
-         type="text" 
-         value={author}
-         name="Author"
-         onChange={(event) => setAuthor(event.target.value)}/>
-      </div>
-
-      <div>
-        <label>URL:</label>
-        <input
-         type="text" 
-         value={url}
-         name="URL"
-         onChange={(event) => setURL(event.target.value)}/>
-      </div>
-
-      <button type="submit">Create</button>
-    </form>
   )
 }
 
@@ -137,9 +92,15 @@ const App = () => {
 
   //load blogs upon starting
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    blogService
+      .getAll()
+      .then(blogs =>
+        blogs.map( blog => {
+          blog.showDetails=false
+          return(blog)
+        })
+      )  
+      .then(blogs => setBlogs(blogs))
   }, [])
 
   //check if there is user data stored in local storage
@@ -196,6 +157,15 @@ const App = () => {
     }, 3500);
   }
 
+  const handleClickView = (event,id) => {
+    event.preventDefault()
+    const clickedBlogIndex = blogs.findIndex(blog => blog.id === id)
+    var copyBlog = [...blogs]
+    copyBlog[clickedBlogIndex].showDetails=!copyBlog[clickedBlogIndex].showDetails
+
+    setBlogs(copyBlog)
+  }
+
   if(!user){
     return (
       <div>
@@ -219,7 +189,7 @@ const App = () => {
         <NewBlog handleCreateBlog={handleCreateBlog}/>
       </Togglable>
 
-      <Blogs blogs={blogs}/>
+      <Blogs blogs={blogs} handleClickView={handleClickView}/>
     </div>
   )
 }
