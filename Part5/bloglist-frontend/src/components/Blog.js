@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Blog = ({ blog, handleClickView }) => {
+const Blog = ({ blog, handleClickView, handleLike }) => {
   const buttonLabel = blog.showDetails ? 'close' : 'view'
   const showWhenVisible = {display : blog.showDetails ? '' : 'none' }
 
@@ -15,11 +15,12 @@ const Blog = ({ blog, handleClickView }) => {
   return(
     <div style={blogStyle}>
       {blog.title} {blog.author}
-      <button onClick={(event)=>handleClickView(event, blog.id)}>{buttonLabel}</button>
+      <button onClick={()=>handleClickView(blog.id)}>{buttonLabel}</button>
 
       <div style={showWhenVisible}>
         <p>URL:{blog.url}</p>
-        <p>Likes: {blog.likes}</p>
+        <p>Likes: {blog.likes}</p> 
+        <button onClick={()=>handleLike(blog.id)}>Like</button>
         <p>Author:{blog.author}</p>
       </div>
 
