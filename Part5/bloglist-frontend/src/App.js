@@ -46,11 +46,11 @@ const Notification = ({notification}) => {
   )
 }
 
-const Blogs = ({ blogs, handleClickView, handleLike }) => {
+const Blogs = ({ blogs, ...props}) => {
   return(
     <div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleClickView={handleClickView} handleLike={handleLike}/>
+        <Blog key={blog.id} blog={blog} {...props} />
         )}
     </div>
   )
@@ -186,6 +186,19 @@ const App = () => {
 
   }
 
+  const handleDelete = async (deletingBlog) => {
+    const confirmation = window.confirm(`Remove blog ${deletingBlog.title} by ${deletingBlog.author}`)
+    if(!confirmation){
+      return;
+    }
+
+    const status = await blogService.remove(deletingBlog.id)
+    if(status === 204){
+      const remainingBlogs = [...blogs].filter(blog => blog.id !== deletingBlog.id)
+      setBlogs(remainingBlogs)
+    }
+  }
+
   if(!user){
     return (
       <div>
@@ -209,7 +222,13 @@ const App = () => {
         <NewBlog handleCreateBlog={handleCreateBlog}/>
       </Togglable>
 
-      <Blogs blogs={blogs} handleClickView={handleClickView} handleLike={handleLike}/>
+      <Blogs 
+        blogs={blogs}
+        handleClickView={handleClickView} 
+        handleLike={handleLike} 
+        handleDelete={handleDelete} 
+        user={user}
+      />
     </div>
   )
 }
