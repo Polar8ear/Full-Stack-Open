@@ -46,11 +46,11 @@ const Notification = ({notification}) => {
   )
 }
 
-const Blogs = ({ blogs, handleClickView }) => {
+const Blogs = ({ blogs, handleClickView, handleLike }) => {
   return(
     <div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleClickView={handleClickView} />
+        <Blog key={blog.id} blog={blog} handleClickView={handleClickView} handleLike={handleLike}/>
         )}
     </div>
   )
@@ -101,6 +101,7 @@ const App = () => {
         })
       )  
       .then(blogs => setBlogs(blogs))
+      })
   }, [])
 
   //check if there is user data stored in local storage
@@ -157,13 +158,32 @@ const App = () => {
     }, 3500);
   }
 
-  const handleClickView = (event,id) => {
-    event.preventDefault()
+  const handleClickView = (id) => {
     const clickedBlogIndex = blogs.findIndex(blog => blog.id === id)
     var copyBlog = [...blogs]
     copyBlog[clickedBlogIndex].showDetails=!copyBlog[clickedBlogIndex].showDetails
 
     setBlogs(copyBlog)
+  }
+
+  const handleLike = async (id) => {
+    const likedBlogIndex = blogs.findIndex(blog => blog.id === id)
+    var copyBlog = [...blogs]
+    var likedBlog = copyBlog[likedBlogIndex]
+    likedBlog.likes+=1
+
+    const updatedBlog = await blogService.update({
+      user: likedBlog.user.id,
+      likes: likedBlog.likes,
+      author: likedBlog.author,
+      url: likedBlog.url,
+      title: likedBlog.title,
+    },likedBlog.id)
+    
+    if(updatedBlog){
+      setBlogs(copyBlog)
+    }
+
   }
 
   if(!user){
@@ -189,7 +209,7 @@ const App = () => {
         <NewBlog handleCreateBlog={handleCreateBlog}/>
       </Togglable>
 
-      <Blogs blogs={blogs} handleClickView={handleClickView}/>
+      <Blogs blogs={blogs} handleClickView={handleClickView} handleLike={handleLike}/>
     </div>
   )
 }
