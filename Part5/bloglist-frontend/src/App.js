@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useImperativeHandle, } from 'react'
+import PropTypes from 'prop-types'
 import Blog from './components/Blog'
 import NewBlog from './components/NewBlog'
 import blogService from './services/blogs'
@@ -82,6 +83,12 @@ const Togglable = React.forwardRef((props,ref) => {
     </div>
   )
 })
+
+Togglable.propTypes = {
+  buttonLabel : PropTypes.string.isRequired
+}
+
+Togglable.displayName = 'Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
