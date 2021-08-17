@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, handleClickView, handleLike, handleDelete, user }) => {
   const buttonLabel = blog.showDetails ? 'close' : 'view'
@@ -32,6 +33,14 @@ const Blog = ({ blog, handleClickView, handleLike, handleDelete, user }) => {
 
     </div>  
   )
+}
+
+Blog.propType = {
+  blog : PropTypes.object.isRequired,
+  handleClickView : PropTypes.func.isRequired,
+  handleDelete : PropTypes.func.isRequired,
+  handleLike : PropTypes.func.isRequired,
+  user : PropTypes.object.isRequired,
 }
 
 export default Blog
