@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 
 const Blog = ({ blog, handleClickView, handleLike, handleDelete, user }) => {
   const buttonLabel = blog.showDetails ? 'close' : 'view'
-  const showWhenVisible = {display : blog.showDetails ? '' : 'none' }
-  
-  const showWhenUserMatch = {display : blog.user.username === user.username ? '' : 'none' }
+  const showWhenVisible = { display : blog.showDetails ? '' : 'none' }
+
+  const showWhenUserMatch = { display : blog.user.username === user.username ? '' : 'none' }
 
   const blogStyle = {
     paddingTop: 10,
@@ -18,20 +18,20 @@ const Blog = ({ blog, handleClickView, handleLike, handleDelete, user }) => {
   return(
     <div style={blogStyle}>
       {blog.title} {blog.author}
-      <button onClick={()=>handleClickView(blog.id)}>{buttonLabel}</button>
+      <button onClick={() => handleClickView(blog.id)}>{buttonLabel}</button>
 
       <div style={showWhenVisible}>
         <p>URL:{blog.url}</p>
 
-        <p>Likes: {blog.likes}</p> 
-        <button onClick={()=>handleLike(blog.id)}>Like</button>
+        <p>Likes: {blog.likes}</p>
+        <button onClick={() => handleLike(blog.id)}>Like</button>
 
         <p>Author:{blog.author}</p>
-        
-        <button style={showWhenUserMatch} onClick={()=>handleDelete(blog)}>Remove</button>
+
+        <button style={showWhenUserMatch} onClick={() => handleDelete(blog)}>Remove</button>
       </div>
 
-    </div>  
+    </div>
   )
 }
 

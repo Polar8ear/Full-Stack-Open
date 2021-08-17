@@ -6,20 +6,20 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import './styles/App.css'
 
-const LoginForm = ({handleLogin}) => {
+const LoginForm = ({ handleLogin }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   return(
-    <form onSubmit={event=>{
+    <form onSubmit={event => {
       handleLogin(event,username,password)
       setUsername('')
-      setPassword('')  
-      }
+      setPassword('')
+    }
     }>
       <div>
         <label>Username</label>
-        <input 
-          type="text" 
+        <input
+          type="text"
           value={username}
           name="Username"
           onChange={(event) => setUsername(event.target.value)}/>
@@ -27,7 +27,7 @@ const LoginForm = ({handleLogin}) => {
       <div>
         <label>Password</label>
         <input
-          type="password" 
+          type="password"
           value={password}
           name="Password"
           onChange={(event) => setPassword(event.target.value)}/>
@@ -37,8 +37,8 @@ const LoginForm = ({handleLogin}) => {
   )
 }
 
-const Notification = ({notification}) => {
-  if(!notification) return null;
+const Notification = ({ notification }) => {
+  if(!notification) return null
 
   return(
     <div className={`notification ${notification.style}`}>
@@ -47,12 +47,12 @@ const Notification = ({notification}) => {
   )
 }
 
-const Blogs = ({ blogs, ...props}) => {
+const Blogs = ({ blogs, ...props }) => {
   return(
     <div>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} {...props} />
-        )}
+      )}
     </div>
   )
 }
@@ -68,7 +68,7 @@ const Togglable = React.forwardRef((props,ref) => {
   }
 
   useImperativeHandle(ref, () => {
-    return{toggleVisibility}
+    return{ toggleVisibility }
   })
 
   return (
@@ -95,13 +95,13 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
   const newBlogRef = useRef()
-  
+
 
   //load blogs upon starting
   useEffect(() => {
     blogService
       .getAll()
-      .then(blogs =>{
+      .then(blogs => {
         blogs.sort((first,second) => second.likes-first.likes)
         blogs.map( blog => {
           blog.showDetails=false
@@ -141,7 +141,7 @@ const App = () => {
       })
     }
   }
-  
+
   const handleLogout = () => {
     setUser(null)
     window.localStorage.removeItem('user')
@@ -162,7 +162,7 @@ const App = () => {
     setNotification(newNotification)
     setTimeout(() => {
       setNotification(null)
-    }, 3500);
+    }, 3500)
   }
 
   const handleClickView = (id) => {
@@ -186,7 +186,7 @@ const App = () => {
       url: likedBlog.url,
       title: likedBlog.title,
     },likedBlog.id)
-    
+
     if(updatedBlog){
       setBlogs(copyBlog)
     }
@@ -196,7 +196,7 @@ const App = () => {
   const handleDelete = async (deletingBlog) => {
     const confirmation = window.confirm(`Remove blog ${deletingBlog.title} by ${deletingBlog.author}`)
     if(!confirmation){
-      return;
+      return
     }
 
     const status = await blogService.remove(deletingBlog.id)
@@ -229,11 +229,11 @@ const App = () => {
         <NewBlog handleCreateBlog={handleCreateBlog}/>
       </Togglable>
 
-      <Blogs 
+      <Blogs
         blogs={blogs}
-        handleClickView={handleClickView} 
-        handleLike={handleLike} 
-        handleDelete={handleDelete} 
+        handleClickView={handleClickView}
+        handleLike={handleLike}
+        handleDelete={handleDelete}
         user={user}
       />
     </div>
