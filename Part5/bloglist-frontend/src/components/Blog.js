@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const Blog = ({ blog, handleClickView, handleLike, handleDelete, user }) => {
-  const buttonLabel = blog.showDetails ? 'close' : 'view'
-  const showWhenVisible = { display : blog.showDetails ? '' : 'none' }
+const Blog = ({ blog,  handleLike, handleDelete, user }) => {
+  const [showDetails, setShowDetails] = useState(false)
+  const buttonLabel = showDetails ? 'close' : 'view'
+  const showWhenVisible = { display : showDetails ? '' : 'none' }
+
+  const toggleShowDetails = () => setShowDetails(!showDetails)
 
   const showWhenUserMatch = { display : blog.user.username === user.username ? '' : 'none' }
 
@@ -17,7 +20,7 @@ const Blog = ({ blog, handleClickView, handleLike, handleDelete, user }) => {
   return(
     <div style={blogStyle}>
       {blog.title} {blog.author}
-      <button onClick={() => handleClickView(blog.id)}>{buttonLabel}</button>
+      <button className="viewBtn" onClick={toggleShowDetails}>{buttonLabel}</button>
 
       <div className="blogDetails" style={showWhenVisible}>
         <p>URL:{blog.url}</p>
