@@ -5,6 +5,10 @@ import Blog from './Blog'
 
 describe('<Blog />', () => {
   let component
+  let handleClickView
+  let handleLike
+  let handleDelete 
+
   beforeEach(() => {
     const blog = {
       title :'test',
@@ -20,9 +24,9 @@ describe('<Blog />', () => {
       username:'testUsername',
     }
 
-    const handleClickView = jest.fn()
-    const handleLike = jest.fn()
-    const handleDelete = jest.fn()
+    handleClickView = jest.fn()
+    handleLike = jest.fn()
+    handleDelete = jest.fn()
 
     const props = {
       handleClickView,
@@ -49,6 +53,14 @@ describe('<Blog />', () => {
 
     const div = component.container.querySelector('.blogDetails')
     expect(div).toHaveStyle('display: block')
+  })
+
+  test('like button works',  () => {
+    const likeButton = component.container.querySelector('.likeBtn')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(handleLike.mock.calls.length).toBe(2)
   })
 })
 
