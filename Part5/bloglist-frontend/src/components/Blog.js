@@ -19,7 +19,7 @@ const Blog = ({ blog, handleClickView, handleLike, handleDelete, user }) => {
       {blog.title} {blog.author}
       <button onClick={() => handleClickView(blog.id)}>{buttonLabel}</button>
 
-      <div style={showWhenVisible}>
+      <div className="blogDetails" style={showWhenVisible}>
         <p>URL:{blog.url}</p>
 
         <p>Likes: {blog.likes}</p>
