@@ -103,10 +103,6 @@ const App = () => {
       .getAll()
       .then(blogs => {
         blogs.sort((first,second) => second.likes-first.likes)
-        blogs.map( blog => {
-          blog.showDetails=false
-          return(blog)
-        })
         setBlogs(blogs)
       })
   }, [])
