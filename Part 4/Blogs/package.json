@@ -8,7 +8,8 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "testAPI": "cross-env NODE_ENV=test jest --verbose --runInBand -- tests/blog_api.test.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start:test": "cross-env NODE_ENV=testFrontEnd node index.js"
   },
   "keywords": [
     "blogs"

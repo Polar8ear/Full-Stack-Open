@@ -8,6 +8,7 @@ const middleware = require('./utils/middleware')
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
+const testRouter = require('./controllers/test')
 const cors = require('cors')
 
 mongoose
@@ -27,6 +28,10 @@ app.use(middleware.tokenExtractor)
 app.use('/api/blogs',middleware.userExtractor,blogsRouter)
 app.use('/api/users',usersRouter)
 app.use('/api/login',loginRouter)
+
+if(config.NODE_ENV === 'testFrontEnd'){
+  app.use('/api/testing',testRouter)
+}
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
