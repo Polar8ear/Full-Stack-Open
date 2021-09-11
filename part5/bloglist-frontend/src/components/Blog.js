@@ -24,7 +24,7 @@ const Blog = ({
       {blog.title}
       {' '}
       {blog.author}
-      <button className="viewBtn" onClick={toggleShowDetails}>{buttonLabel}</button>
+      <button type="button" className="viewBtn" onClick={toggleShowDetails}>{buttonLabel}</button>
 
       <div className="blogDetails" style={showWhenVisible}>
         <p>
@@ -36,14 +36,14 @@ const Blog = ({
           Likes:
           {blog.likes}
         </p>
-        <button className="likeBtn" onClick={() => handleLike(blog.id)}>Like</button>
+        <button type="button" className="likeBtn" onClick={() => handleLike(blog.id)}>Like</button>
 
         <p>
           Author:
           {blog.author}
         </p>
 
-        <button style={showWhenUserMatch} onClick={() => handleDelete(blog)}>Remove</button>
+        <button type="button" style={showWhenUserMatch} onClick={() => handleDelete(blog)}>Remove</button>
       </div>
 
     </div>

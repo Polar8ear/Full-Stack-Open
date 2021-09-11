@@ -47,7 +47,10 @@ module.exports = {
           "error", { "before": true, "after": true }
       ],
       "no-console": 0,
-      "react/prop-types": 0
+      "no-alert": 0,
+      "react/prop-types": 0,
+      "react/jsx-filename-extension": 0,
+      "react/jsx-props-no-spreading": 0
   },
   "settings": {
     "react": {

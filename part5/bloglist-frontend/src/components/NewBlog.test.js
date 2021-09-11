@@ -30,7 +30,7 @@ describe('<NewBlog/>', () => {
       },
     ]
 
-    inputFieldResponses.map(({ id, response }) => {
+    inputFieldResponses.forEach(({ id, response }) => {
       const inputField = component.container.querySelector(id)
       fireEvent.change(inputField,
         { target: { value: response } })

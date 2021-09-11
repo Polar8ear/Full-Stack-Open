@@ -19,22 +19,28 @@ const LoginForm = ({ handleLogin }) => {
     }}
     >
       <div>
-        <label>Username</label>
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={(event) => setUsername(event.target.value)}
-        />
+        <label htmlFor="username">
+          Username
+          <input
+            id="username"
+            type="text"
+            value={username}
+            name="Username"
+            onChange={(event) => setUsername(event.target.value)}
+          />
+        </label>
       </div>
       <div>
-        <label>Password</label>
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={(event) => setPassword(event.target.value)}
-        />
+        <label htmlFor="password">
+          Password
+          <input
+            id="password"
+            type="password"
+            value={password}
+            name="Password"
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </label>
       </div>
       <button type="submit">login</button>
     </form>
@@ -72,11 +78,11 @@ const Togglable = React.forwardRef((props, ref) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <button type="button" onClick={toggleVisibility}>{props.buttonLabel}</button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
+        <button type="button" onClick={toggleVisibility}>cancel</button>
       </div>
     </div>
   )
@@ -98,9 +104,9 @@ const App = () => {
   useEffect(() => {
     blogService
       .getAll()
-      .then((blogs) => {
-        blogs.sort((first, second) => second.likes - first.likes)
-        setBlogs(blogs)
+      .then((receivedBlogs) => {
+        receivedBlogs.sort((first, second) => second.likes - first.likes)
+        setBlogs(receivedBlogs)
       })
   }, [])
 
@@ -114,6 +120,13 @@ const App = () => {
       blogService.setToken(parsedUser.token)
     }
   }, [])
+
+  const showNotification = (newNotification) => {
+    setNotification(newNotification)
+    setTimeout(() => {
+      setNotification(null)
+    }, 3500)
+  }
 
   const handleLogin = async (event, username, password) => {
     event.preventDefault()
@@ -149,13 +162,6 @@ const App = () => {
       style: 'success',
       text: `a new blog '${savedBlog.title}' by ${savedBlog.author} added `,
     })
-  }
-
-  const showNotification = (newNotification) => {
-    setNotification(newNotification)
-    setTimeout(() => {
-      setNotification(null)
-    }, 3500)
   }
 
   const handleClickView = (id) => {
@@ -215,7 +221,7 @@ const App = () => {
         {user.name}
         {' '}
         is logged in
-        <button onClick={handleLogout}>Logout</button>
+        <button type="button" onClick={handleLogout}>Logout</button>
       </div>
 
       <Togglable buttonLabel="Create New Blog" ref={newBlogRef}>

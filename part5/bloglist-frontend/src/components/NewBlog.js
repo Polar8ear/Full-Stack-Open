@@ -14,36 +14,42 @@ const NewBlog = ({ handleCreateBlog }) => {
     }}
     >
       <div>
-        <label>Title:</label>
-        <input
-          id="title"
-          type="text"
-          value={title}
-          name="Title"
-          onChange={(event) => setTitle(event.target.value)}
-        />
+        <label htmlFor="title">
+          Title:
+          <input
+            id="title"
+            type="text"
+            value={title}
+            name="Title"
+            onChange={(event) => setTitle(event.target.value)}
+          />
+        </label>
       </div>
 
       <div>
-        <label>Author:</label>
-        <input
-          id="author"
-          type="text"
-          value={author}
-          name="Author"
-          onChange={(event) => setAuthor(event.target.value)}
-        />
+        <label htmlFor="author">
+          Author:
+          <input
+            id="author"
+            type="text"
+            value={author}
+            name="Author"
+            onChange={(event) => setAuthor(event.target.value)}
+          />
+        </label>
       </div>
 
       <div>
-        <label>URL:</label>
-        <input
-          id="url"
-          type="text"
-          value={url}
-          name="URL"
-          onChange={(event) => setURL(event.target.value)}
-        />
+        <label htmlFor="url">
+          URL:
+          <input
+            id="url"
+            type="text"
+            value={url}
+            name="URL"
+            onChange={(event) => setURL(event.target.value)}
+          />
+        </label>
       </div>
 
       <button id="createBtn" type="submit">Create</button>
