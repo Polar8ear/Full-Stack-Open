@@ -58,7 +58,7 @@ const Notification = ({ notification }) => {
 }
 
 const Blogs = ({ blogs, ...props }) => (
-  <div>
+  <div id="blogs">
     {blogs.map((blog) => <Blog key={blog.id} blog={blog} {...props} />)}
   </div>
 )
