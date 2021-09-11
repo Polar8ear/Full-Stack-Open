@@ -7,21 +7,21 @@ describe('<Blog />', () => {
   let component
   let handleClickView
   let handleLike
-  let handleDelete 
+  let handleDelete
 
   beforeEach(() => {
     const blog = {
-      title :'test',
-      author :'testAuthor',
-      URL : 'testURL',
-      likes : '27',
+      title: 'test',
+      author: 'testAuthor',
+      URL: 'testURL',
+      likes: '27',
       user: {
-        username:'testUsername'
-      }
+        username: 'testUsername',
+      },
     }
 
     const user = {
-      username:'testUsername',
+      username: 'testUsername',
     }
 
     handleClickView = jest.fn()
@@ -34,11 +34,10 @@ describe('<Blog />', () => {
       handleLike,
     }
 
-    component = render (
-      <Blog blog={blog} user={user} {...props}/>
+    component = render(
+      <Blog blog={blog} user={user} {...props} />,
     )
   })
-
 
   test('renders title and author but not url and likes', () => {
     expect(component.container).toHaveTextContent('test testAuthor')
@@ -55,7 +54,7 @@ describe('<Blog />', () => {
     expect(div).toHaveStyle('display: block')
   })
 
-  test('like button works',  () => {
+  test('like button works', () => {
     const likeButton = component.container.querySelector('.likeBtn')
     fireEvent.click(likeButton)
     fireEvent.click(likeButton)
@@ -63,4 +62,3 @@ describe('<Blog />', () => {
     expect(handleLike.mock.calls.length).toBe(2)
   })
 })
-
