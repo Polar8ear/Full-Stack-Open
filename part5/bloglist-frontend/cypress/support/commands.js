@@ -11,6 +11,18 @@
 //
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
+Cypress.Commands.add('login', (user) => {
+  const loginURL = 'http://localhost:3003/api/login'
+  cy.request({
+    url: loginURL,
+    method: 'POST',
+    body: user,
+  })
+    .then((response) => {
+      localStorage.setItem('user', JSON.stringify(response.body))
+      cy.wrap(response.body.token).as('token')
+    })
+})
 //
 //
 // -- This is a child command --

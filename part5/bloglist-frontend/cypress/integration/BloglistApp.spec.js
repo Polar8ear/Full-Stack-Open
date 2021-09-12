@@ -71,16 +71,14 @@ describe('Bloglist app', function () {
     ]
 
     beforeEach(function () {
-      cy.request('POST', 'http://localhost:3003/api/login', { username: user.username, password: user.password })
-        .then((response) => {
-          const userInfo = response.body
-          localStorage.setItem('user', JSON.stringify(userInfo))
-
+      cy.login(user)
+      cy.get('@token')
+        .then((token) => {
           initialBlogs.forEach((blog) => {
             const options = {
               method: 'POST',
               url: 'http://localhost:3003/api/blogs',
-              headers: { Authorization: `Bearer ${userInfo.token}` },
+              headers: { Authorization: `Bearer ${token}` },
               body: blog,
             }
             cy.request(options)
