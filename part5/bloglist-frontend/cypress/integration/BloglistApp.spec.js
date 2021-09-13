@@ -118,5 +118,42 @@ describe('Bloglist app', function () {
           cy.contains('Likes:1')
         })
     })
+
+    it('the creator user can delete his own post', function () {
+      const blogToBeDeleted = initialBlogs[0]
+      cy.get('#blogs')
+        .contains(blogToBeDeleted.title)
+        .within(function () {
+          cy.get('.viewBtn').click()
+          cy.contains('Remove').click()
+        })
+
+      cy.get('#blogs')
+        .should('not.contain', blogToBeDeleted.title)
+    })
+
+    it('the non-creator user cannot delete other\'s blog', function () {
+      const otherUser = {
+        name: 'Koala',
+        username: 'Koala3003',
+        password: 'Koala3003',
+      }
+      cy.request('POST', 'http://localhost:3003/api/users', otherUser)
+      cy.login(otherUser)
+
+      cy.visit('http://localhost:3000')
+
+      cy.contains('Koala is logged in')
+
+      const blogToBeDeleted = initialBlogs[0]
+
+      cy.contains(blogToBeDeleted.title)
+        .within(function () {
+          cy.get('.viewBtn').click()
+        })
+
+      cy.contains('Remove')
+        .should('not.be.visible')
+    })
   })
 })
