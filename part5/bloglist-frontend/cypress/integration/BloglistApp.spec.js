@@ -108,15 +108,10 @@ describe('Bloglist app', function () {
 
     it('a blog can be liked', function () {
       const blogToBeLiked = initialBlogs[0]
-      cy.get('#blogs')
-        .contains(blogToBeLiked.title)
-        .within(function () {
-          cy.get('.viewBtn').click()
-          cy.contains('Likes:0')
-
-          cy.get('.likeBtn').click()
-          cy.contains('Likes:1')
-        })
+      cy.viewBlogOf(blogToBeLiked)
+      cy.contains('Likes: 0')
+      cy.likeBlogOf(blogToBeLiked)
+      cy.contains('Likes: 1')
     })
 
     it('the creator user can delete his own post', function () {
@@ -154,6 +149,18 @@ describe('Bloglist app', function () {
 
       cy.contains('Remove')
         .should('not.be.visible')
+    })
+
+    it.only('blogs are sorted according to likes', function () {
+      const blogToBeLiked = initialBlogs[1]
+      cy.viewBlogOf(blogToBeLiked)
+      cy.likeBlogOf(blogToBeLiked)
+      cy.likeBlogOf(blogToBeLiked)
+
+      cy.get('#blogs div .likes').then(($likes) => {
+        const likes = $likes.map((_i, el) => el.innerText.match(/[0-9]+/))
+        expect(likes.get()).to.deep.equal([...likes].sort((a, b) => b - a))
+      })
     })
   })
 })
