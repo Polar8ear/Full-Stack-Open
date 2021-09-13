@@ -32,7 +32,7 @@ const Blog = ({
           {blog.url}
         </p>
 
-        <p>
+        <p className="likes">
           Likes:
           {blog.likes}
         </p>
