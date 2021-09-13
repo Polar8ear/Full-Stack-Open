@@ -105,10 +105,17 @@ const App = () => {
     blogService
       .getAll()
       .then((receivedBlogs) => {
-        receivedBlogs.sort((first, second) => second.likes - first.likes)
         setBlogs(receivedBlogs)
       })
   }, [])
+
+  useEffect(() => {
+    const sortedBlogs = blogs.concat().sort((first, second) => second.likes - first.likes)
+
+    if (JSON.stringify(blogs) !== JSON.stringify(sortedBlogs)) {
+      setBlogs(sortedBlogs)
+    }
+  }, [blogs])
 
   // check if there is user data stored in local storage
   useEffect(() => {
