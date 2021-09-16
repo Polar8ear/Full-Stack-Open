@@ -153,14 +153,18 @@ describe('Bloglist app', function () {
 
     it.only('blogs are sorted according to likes', function () {
       const blogToBeLiked = initialBlogs[1]
+      cy.intercept('PUT', '**/blogs/*').as('likeRequest')
       cy.viewBlogOf(blogToBeLiked)
       cy.likeBlogOf(blogToBeLiked)
-      cy.likeBlogOf(blogToBeLiked)
+      cy.wait('@likeRequest').likeBlogOf(blogToBeLiked)
+      cy.wait('@likeRequest').likeBlogOf(blogToBeLiked)
 
-      cy.get('#blogs div .likes').then(($likes) => {
-        const likes = $likes.map((_i, el) => el.innerText.match(/[0-9]+/))
-        expect(likes.get()).to.deep.equal([...likes].sort((a, b) => b - a))
-      })
+      cy.wait('@likeRequest')
+        .get('#blogs div .likes').then(($likes) => {
+          const likes = $likes.map((_i, el) => el.innerText.match(/[0-9]+/))
+          const sortedLikes = [...likes].sort((a, b) => b - a)
+          expect(likes.get()).to.deep.equal(sortedLikes)
+        })
     })
   })
 })
