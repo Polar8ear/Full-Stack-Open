@@ -24,7 +24,8 @@ module.exports = {
   "rules": {
       "indent": [
           "error",
-          2  
+          2  ,
+          { "SwitchCase": 1 },
       ],
       "linebreak-style": [
           "error",
@@ -53,11 +54,6 @@ module.exports = {
       "react/prop-types": 0,
       "react/jsx-filename-extension": 0,
       "react/jsx-props-no-spreading": 0,
-      "indent": [
-          "error",
-          2,
-          { "switchCase" : 1 }
-      ],
   },
   "settings": {
     "react": {
