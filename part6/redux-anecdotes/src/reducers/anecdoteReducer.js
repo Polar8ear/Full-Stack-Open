@@ -36,6 +36,7 @@ const reducer = (state = initialState, action) => {
   }
 }
 
+//Below are action creators
 export const createNewAnecdote = (content) => {
   return({
     type: 'NEW_ANECDOTE',
