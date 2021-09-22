@@ -1,6 +1,7 @@
 
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { popNotification } from '../helpers/anectodeHelpers'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 
 const AnecdoteList = () => {
@@ -9,8 +10,12 @@ const AnecdoteList = () => {
 
   const dispatch = useDispatch()
 
-  const vote = (id) => {
-    dispatch(voteAnecdote(id))
+  const vote = (anectode) => {
+    dispatch(voteAnecdote(anectode.id))
+    popNotification(
+      `You have voted '${anectode.content}''`,
+      dispatch,
+    )
   }
 
   return (
@@ -22,7 +27,7 @@ const AnecdoteList = () => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
         </div>
       )}
