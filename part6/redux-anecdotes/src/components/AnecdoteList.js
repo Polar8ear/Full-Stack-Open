@@ -5,9 +5,7 @@ import { popNotification } from '../helpers/anectodeHelpers'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector(state => state.anecdotes)
-  const sortedAnecdotes = anecdotes.sort((a, b) => b.votes - a.votes)
-
+  const { filter, anecdotes } = useSelector(state => state)
   const dispatch = useDispatch()
 
   const vote = (anectode) => {
@@ -18,9 +16,18 @@ const AnecdoteList = () => {
     )
   }
 
+  const caseInsensitiveIncludes = (text, searchedText) => {
+    const cText = text.toUpperCase()
+    const cSearchedText = searchedText.toUpperCase()
+    return cText.includes(cSearchedText)
+  }
+
+  const sortedAnecdotes = anecdotes.sort((a, b) => b.votes - a.votes)
+  const anecdotesToBeShown = sortedAnecdotes.filter((anecdote) => caseInsensitiveIncludes(anecdote.content, filter.searchedText))
+
   return (
     <div>
-      {sortedAnecdotes.map(anecdote =>
+      {anecdotesToBeShown.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
