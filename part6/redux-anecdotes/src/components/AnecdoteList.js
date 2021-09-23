@@ -1,8 +1,8 @@
 
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { popNotification } from '../helpers/anectodeHelpers'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
   const { filter, anecdotes } = useSelector(state => state)
@@ -10,10 +10,7 @@ const AnecdoteList = () => {
 
   const vote = (anectode) => {
     dispatch(voteAnecdote(anectode))
-    popNotification(
-      `You have voted '${anectode.content}''`,
-      dispatch,
-    )
+    dispatch(setNotification(`You have voted '${anectode.content}''`))
   }
 
   const caseInsensitiveIncludes = (text, searchedText) => {

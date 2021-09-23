@@ -2,7 +2,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { createNewAnecdote } from '../reducers/anecdoteReducer'
-import { popNotification } from '../helpers/anectodeHelpers'
+import { setNotification } from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
@@ -13,10 +13,7 @@ const AnecdoteForm = () => {
     event.target.content.value = ''
 
     dispatch(createNewAnecdote(anecdoteContent))
-    popNotification(
-      'An anectode has been added',
-      dispatch,
-    )
+    dispatch(setNotification('An anectode has been added'))
   }
 
   return (
