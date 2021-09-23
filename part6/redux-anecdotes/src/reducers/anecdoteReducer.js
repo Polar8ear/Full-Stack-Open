@@ -33,11 +33,18 @@ export const createNewAnecdote = (content) => {
   }
 }
 
-export const voteAnecdote = (id) => {
-  return({
-    type: 'VOTE',
-    data: { id },
-  })
+export const voteAnecdote = (anecdote) => {
+  return async (dispatch) => {
+    const responseStatus = await anecdoteService.vote(anecdote)
+
+    //exit if there is any error
+    if(responseStatus >= 400) return
+
+    dispatch({
+      type: 'VOTE',
+      data: { id: anecdote.id },
+    })
+  }
 }
 
 export const initializeAnecdotes = () => {

@@ -9,7 +9,7 @@ const AnecdoteList = () => {
   const dispatch = useDispatch()
 
   const vote = (anectode) => {
-    dispatch(voteAnecdote(anectode.id))
+    dispatch(voteAnecdote(anectode))
     popNotification(
       `You have voted '${anectode.content}''`,
       dispatch,
