@@ -26,4 +26,14 @@ export const removeNotification = () => {
   })
 }
 
+export const setNotification = (message, notificationDurationInSeconds=5) => {
+  return (dispatch) => {
+    dispatch(createNewNotification(message))
+    setTimeout(() => {
+      dispatch(removeNotification())
+    },notificationDurationInSeconds*1000)
+  }
+}
+
+
 export default reducer
