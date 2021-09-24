@@ -13,10 +13,10 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export const createNewNotification = (message) => {
+export const createNewNotification = (message, timeoutID) => {
   return({
     type: 'NEW_NOTIFICATION',
-    data: { message }
+    data: { message, timeoutID }
   })
 }
 
@@ -26,12 +26,20 @@ export const removeNotification = () => {
   })
 }
 
-export const setNotification = (message, notificationDurationInSeconds=5) => {
-  return (dispatch) => {
-    dispatch(createNewNotification(message))
-    setTimeout(() => {
+export const setNotification = (message, durationInSeconds=5) => {
+  return (dispatch, getState) => {
+    //Cancel running timeout to avoid previous notification causing the new notification to be removed
+    const existingTimeoutID= getState().notification.timeoutID
+    if(existingTimeoutID) {
+      clearTimeout(existingTimeoutID)
+    }
+
+    //Schedule remove notification first to have an id for saving in store
+    const timeoutID = setTimeout(() => {
       dispatch(removeNotification())
-    },notificationDurationInSeconds*1000)
+    },durationInSeconds*1000)
+
+    dispatch(createNewNotification(message,timeoutID))
   }
 }
 
