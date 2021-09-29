@@ -62,9 +62,9 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const content = useField('text')
-  const author = useField('text')
-  const info = useField('text')
+  const {reset: resetContent, ...content} = useField('text')
+  const {reset: resetAuthor, ...author} = useField('text')
+  const {reset: resetInfo, ...info} = useField('text')
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -76,11 +76,10 @@ const CreateNew = (props) => {
     })
   }
 
-  const allFields = [content, author, info]
   const resetAllField = () => {
-    allFields.map((field) => {
-      field.reset()
-    })
+    resetContent()
+    resetAuthor()
+    resetInfo()
   }
 
   return (
@@ -99,7 +98,7 @@ const CreateNew = (props) => {
           url for more info
           <input {...info} />
         </div>
-        <button onSubmit={handleSubmit}>create</button>
+        <button onSubmit={handleSubmit} >create</button>
         <button onClick={resetAllField}>reset</button>
       </form>
     </div>
