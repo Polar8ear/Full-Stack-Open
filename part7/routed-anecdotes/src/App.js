@@ -98,8 +98,8 @@ const CreateNew = (props) => {
           url for more info
           <input {...info} />
         </div>
-        <button onSubmit={handleSubmit} >create</button>
-        <button onClick={resetAllField}>reset</button>
+        <button type="submit" onSubmit={handleSubmit} >create</button>
+        <button type="button" onClick={resetAllField}>reset</button>
       </form>
     </div>
   )
