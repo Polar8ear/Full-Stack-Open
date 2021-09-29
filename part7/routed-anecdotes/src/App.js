@@ -76,10 +76,17 @@ const CreateNew = (props) => {
     })
   }
 
+  const allFields = [content, author, info]
+  const resetAllField = () => {
+    allFields.map((field) => {
+      field.reset()
+    })
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form >
         <div>
           content
           <input {...content} />
@@ -92,7 +99,8 @@ const CreateNew = (props) => {
           url for more info
           <input {...info} />
         </div>
-        <button>create</button>
+        <button onSubmit={handleSubmit}>create</button>
+        <button onClick={resetAllField}>reset</button>
       </form>
     </div>
   )
