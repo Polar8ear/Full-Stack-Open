@@ -25,7 +25,6 @@ const useResource = (baseUrl) => {
     setResources(response.data)
   }
 
-
   const create = async (resource) => {
     const response = await axios.post(baseUrl, resource)
     const newResource = response.data
@@ -49,6 +48,11 @@ const App = () => {
 
   const [notes, noteService] = useResource('http://localhost:3005/notes')
   const [persons, personService] = useResource('http://localhost:3005/persons')
+
+  useEffect(() => {
+    noteService.initialize()
+    personService.initialize()
+  }, [])
 
   const handleNoteSubmit = (event) => {
     event.preventDefault()
