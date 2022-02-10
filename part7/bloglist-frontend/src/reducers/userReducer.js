@@ -13,12 +13,16 @@ const userReducer = (state = {}, action) => {
 
 const changeUsername = (username) => ({
   type: 'CHANGE_USERNAME',
-  username,
+  data: {
+    username,
+  },
 })
 
 const changePassword = (password) => ({
   type: 'CHANGE_PASSWORD',
-  password,
+  data: {
+    password,
+  },
 })
 
 export { changeUsername, changePassword }
