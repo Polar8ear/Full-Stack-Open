@@ -1,10 +1,10 @@
-import React, {
-  useState, useEffect, useRef, useImperativeHandle,
-} from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect, useRef } from 'react'
+
 import Blog from './components/Blog'
 import NewBlog from './components/NewBlog'
 import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
+
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './styles/App.css'
@@ -24,37 +24,6 @@ const Blogs = ({ blogs, ...props }) => (
     {blogs.map((blog) => <Blog key={blog.id} blog={blog} {...props} />)}
   </div>
 )
-
-const Togglable = React.forwardRef((props, ref) => {
-  const [visible, setVisible] = useState(false)
-
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
-
-  const toggleVisibility = () => {
-    setVisible(!visible)
-  }
-
-  useImperativeHandle(ref, () => ({ toggleVisibility }))
-
-  return (
-    <div>
-      <div style={hideWhenVisible}>
-        <button type="button" onClick={toggleVisibility}>{props.buttonLabel}</button>
-      </div>
-      <div style={showWhenVisible}>
-        {props.children}
-        <button type="button" onClick={toggleVisibility}>cancel</button>
-      </div>
-    </div>
-  )
-})
-
-Togglable.propTypes = {
-  buttonLabel: PropTypes.string.isRequired,
-}
-
-Togglable.displayName = 'Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
