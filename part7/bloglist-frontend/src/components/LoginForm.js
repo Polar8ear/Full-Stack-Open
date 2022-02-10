@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { changeUsername, changePassword } from '../reducers/userReducer'
 
 const LoginForm = ({ handleLogin }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
+
+  const username = useSelector((state) => state.user.username)
+  const password = useSelector((state) => state.user.password)
+
   return (
     <form onSubmit={(event) => {
       handleLogin(event, username, password)
-      setUsername('')
-      setPassword('')
+      dispatch(changeUsername(''))
+      dispatch(changePassword(''))
     }}
     >
       <div>
@@ -18,7 +23,7 @@ const LoginForm = ({ handleLogin }) => {
             type="text"
             value={username}
             name="Username"
-            onChange={(event) => setUsername(event.target.value)}
+            onChange={(event) => dispatch(changeUsername(event.target.value))}
           />
         </label>
       </div>
@@ -30,7 +35,7 @@ const LoginForm = ({ handleLogin }) => {
             type="password"
             value={password}
             name="Password"
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(event) => dispatch(changePassword(event.target.value))}
           />
         </label>
       </div>
