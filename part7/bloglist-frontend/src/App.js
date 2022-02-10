@@ -4,20 +4,11 @@ import Blog from './components/Blog'
 import NewBlog from './components/NewBlog'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
+import Notification from './components/Notification'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './styles/App.css'
-
-const Notification = ({ notification }) => {
-  if (!notification) return null
-
-  return (
-    <div className={`notification ${notification.style}`}>
-      {notification.text}
-    </div>
-  )
-}
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
