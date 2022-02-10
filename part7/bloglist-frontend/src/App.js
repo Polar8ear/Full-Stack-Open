@@ -19,12 +19,6 @@ const Notification = ({ notification }) => {
   )
 }
 
-const Blogs = ({ blogs, ...props }) => (
-  <div id="blogs">
-    {blogs.map((blog) => <Blog key={blog.id} blog={blog} {...props} />)}
-  </div>
-)
-
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
@@ -167,13 +161,16 @@ const App = () => {
         <NewBlog handleCreateBlog={handleCreateBlog} />
       </Togglable>
 
-      <Blogs
-        blogs={blogs}
-        handleClickView={handleClickView}
-        handleLike={handleLike}
-        handleDelete={handleDelete}
-        user={user}
-      />
+      {blogs.map((blog) => (
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleClickView={handleClickView}
+          handleLike={handleLike}
+          handleDelete={handleDelete}
+          user={user}
+        />
+      ))}
     </div>
   )
 }
