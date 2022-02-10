@@ -1,0 +1,16 @@
+.notification {
+  border: 3px solid;
+
+  text-align: center;
+  font-size: 5vh;
+}
+
+.success {
+  border-color: green;
+  color: green;
+}
+
+.error {
+  border-color: red;
+  color: red;
+}
