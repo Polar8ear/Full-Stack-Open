@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addNotification, deleteNotification } from './reducers/notificationReducer'
 
 import Blog from './components/Blog'
 import NewBlog from './components/NewBlog'
@@ -11,9 +13,11 @@ import loginService from './services/login'
 import './styles/App.css'
 
 const App = () => {
+  const dispatch = useDispatch()
+
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
+  const notification = useSelector((state) => state.notification)
   const newBlogRef = useRef()
 
   // load blogs upon starting
@@ -44,10 +48,10 @@ const App = () => {
     }
   }, [])
 
-  const showNotification = (newNotification) => {
-    setNotification(newNotification)
+  const showNotification = (notificationData) => {
+    dispatch(addNotification(notificationData))
     setTimeout(() => {
-      setNotification(null)
+      dispatch(deleteNotification())
     }, 3500)
   }
 
