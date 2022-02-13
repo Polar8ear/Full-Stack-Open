@@ -1,5 +1,6 @@
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
+  case 'SET_BLOGS':
   case 'INTIALISE_BLOGS':
     return action.data.blogs
 
@@ -16,11 +17,16 @@ const initialiseBlogs = (blogs) => ({
   data: { blogs },
 })
 
+const setBlogs = (blogs) => ({
+  type: 'SET_BLOGS',
+  data: { blogs },
+})
+
 const addBlog = (blog) => ({
   type: 'ADD_BLOG',
   data: { blog },
 })
 
-export { initialiseBlogs, addBlog }
+export { initialiseBlogs, addBlog, setBlogs }
 
 export default blogsReducer

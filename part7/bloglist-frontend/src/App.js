@@ -11,7 +11,7 @@ import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './styles/App.css'
-import { addBlog, initialiseBlogs } from './reducers/blogsReducer'
+import { addBlog, initialiseBlogs, setBlogs } from './reducers/blogsReducer'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -34,7 +34,7 @@ const App = () => {
     const sortedBlogs = blogs.concat().sort((first, second) => second.likes - first.likes)
 
     if (JSON.stringify(blogs) !== JSON.stringify(sortedBlogs)) {
-      dispatch(initialiseBlogs(sortedBlogs))
+      dispatch(setBlogs(sortedBlogs))
     }
   }, [blogs])
 
@@ -97,7 +97,7 @@ const App = () => {
     const copyBlog = [...blogs]
     copyBlog[clickedBlogIndex].showDetails = !copyBlog[clickedBlogIndex].showDetails
 
-    dispatch(initialiseBlogs(copyBlog))
+    dispatch(setBlogs(copyBlog))
   }
 
   const handleLike = async (id) => {
@@ -115,7 +115,7 @@ const App = () => {
     }, likedBlog.id)
 
     if (updatedBlog) {
-      dispatch(initialiseBlogs(copyBlog))
+      dispatch(setBlogs(copyBlog))
     }
   }
 
@@ -128,7 +128,7 @@ const App = () => {
     const status = await blogService.remove(deletingBlog.id)
     if (status === 204) {
       const remainingBlogs = [...blogs].filter((blog) => blog.id !== deletingBlog.id)
-      dispatch(initialiseBlogs(remainingBlogs))
+      dispatch(setBlogs(remainingBlogs))
     }
   }
 
