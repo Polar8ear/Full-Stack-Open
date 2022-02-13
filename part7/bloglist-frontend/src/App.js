@@ -11,11 +11,12 @@ import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './styles/App.css'
+import { addBlog, initialiseBlogs } from './reducers/blogsReducer'
 
 const App = () => {
   const dispatch = useDispatch()
 
-  const [blogs, setBlogs] = useState([])
+  const blogs = useSelector((state) => state.blogs)
   const [user, setUser] = useState(null)
   const notification = useSelector((state) => state.notification)
   const newBlogRef = useRef()
@@ -25,7 +26,7 @@ const App = () => {
     blogService
       .getAll()
       .then((receivedBlogs) => {
-        setBlogs(receivedBlogs)
+        dispatch(initialiseBlogs(receivedBlogs))
       })
   }, [])
 
@@ -33,7 +34,7 @@ const App = () => {
     const sortedBlogs = blogs.concat().sort((first, second) => second.likes - first.likes)
 
     if (JSON.stringify(blogs) !== JSON.stringify(sortedBlogs)) {
-      setBlogs(sortedBlogs)
+      dispatch(initialiseBlogs(sortedBlogs))
     }
   }, [blogs])
 
@@ -84,7 +85,7 @@ const App = () => {
     event.preventDefault()
     newBlogRef.current.toggleVisibility()
     const savedBlog = await blogService.create(newBlog)
-    setBlogs(blogs.concat(savedBlog))
+    dispatch(addBlog(savedBlog))
     showNotification({
       style: 'success',
       text: `a new blog '${savedBlog.title}' by ${savedBlog.author} added `,
@@ -96,7 +97,7 @@ const App = () => {
     const copyBlog = [...blogs]
     copyBlog[clickedBlogIndex].showDetails = !copyBlog[clickedBlogIndex].showDetails
 
-    setBlogs(copyBlog)
+    dispatch(initialiseBlogs(copyBlog))
   }
 
   const handleLike = async (id) => {
@@ -114,7 +115,7 @@ const App = () => {
     }, likedBlog.id)
 
     if (updatedBlog) {
-      setBlogs(copyBlog)
+      dispatch(initialiseBlogs(copyBlog))
     }
   }
 
@@ -127,7 +128,7 @@ const App = () => {
     const status = await blogService.remove(deletingBlog.id)
     if (status === 204) {
       const remainingBlogs = [...blogs].filter((blog) => blog.id !== deletingBlog.id)
-      setBlogs(remainingBlogs)
+      dispatch(initialiseBlogs(remainingBlogs))
     }
   }
 
