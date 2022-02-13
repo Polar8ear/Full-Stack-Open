@@ -23,11 +23,7 @@ const App = () => {
 
   // load blogs upon starting
   useEffect(() => {
-    blogService
-      .getAll()
-      .then((receivedBlogs) => {
-        dispatch(initialiseBlogs(receivedBlogs))
-      })
+    dispatch(initialiseBlogs())
   }, [])
 
   useEffect(() => {

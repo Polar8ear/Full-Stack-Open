@@ -1,3 +1,5 @@
+import blogService from '../services/blogs'
+
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
   case 'SET_BLOGS':
@@ -12,10 +14,13 @@ const blogsReducer = (state = [], action) => {
   }
 }
 
-const initialiseBlogs = (blogs) => ({
-  type: 'INTIALISE_BLOGS',
-  data: { blogs },
-})
+const initialiseBlogs = () => async (dispatch) => {
+  const blogs = await blogService.getAll()
+  dispatch({
+    type: 'INTIALISE_BLOGS',
+    data: { blogs },
+  })
+}
 
 const setBlogs = (blogs) => ({
   type: 'SET_BLOGS',
