@@ -77,15 +77,16 @@ const App = () => {
     window.localStorage.removeItem('user')
   }
 
-  const handleCreateBlog = async (event, newBlog) => {
+  const handleCreateBlog = (event, newBlog) => {
     event.preventDefault()
     newBlogRef.current.toggleVisibility()
-    const savedBlog = await blogService.create(newBlog)
-    dispatch(addBlog(savedBlog))
-    showNotification({
-      style: 'success',
-      text: `a new blog '${savedBlog.title}' by ${savedBlog.author} added `,
-    })
+
+    dispatch(addBlog(newBlog)).then(
+      (savedBlog) => showNotification({
+        style: 'success',
+        text: `a new blog '${savedBlog.title}' by ${savedBlog.author} added `,
+      }),
+    )
   }
 
   const handleClickView = (id) => {
