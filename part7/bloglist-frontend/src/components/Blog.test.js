@@ -1,9 +1,9 @@
-import React from 'react'
-import '@testing-library/jest-dom/extend-expect'
-import { fireEvent, render } from '@testing-library/react'
-import Blog from './Blog'
+import React from "react"
+import "@testing-library/jest-dom/extend-expect"
+import { fireEvent, render } from "@testing-library/react"
+import Blog from "./Blog"
 
-describe('<Blog />', () => {
+describe("<Blog />", () => {
   let component
   let handleClickView
   let handleLike
@@ -11,17 +11,17 @@ describe('<Blog />', () => {
 
   beforeEach(() => {
     const blog = {
-      title: 'test',
-      author: 'testAuthor',
-      URL: 'testURL',
-      likes: '27',
+      title: "test",
+      author: "testAuthor",
+      URL: "testURL",
+      likes: "27",
       user: {
-        username: 'testUsername',
+        username: "testUsername",
       },
     }
 
     const user = {
-      username: 'testUsername',
+      username: "testUsername",
     }
 
     handleClickView = jest.fn()
@@ -34,28 +34,26 @@ describe('<Blog />', () => {
       handleLike,
     }
 
-    component = render(
-      <Blog blog={blog} user={user} {...props} />,
-    )
+    component = render(<Blog blog={blog} user={user} {...props} />)
   })
 
-  test('renders title and author but not url and likes', () => {
-    expect(component.container).toHaveTextContent('test testAuthor')
+  test("renders title and author but not url and likes", () => {
+    expect(component.container).toHaveTextContent("test testAuthor")
 
-    const div = component.container.querySelector('.blogDetails')
-    expect(div).toHaveStyle('display: none')
+    const div = component.container.querySelector(".blogDetails")
+    expect(div).toHaveStyle("display: none")
   })
 
-  test('shows url and likes when clicked view', () => {
-    const viewButton = component.container.querySelector('.viewBtn')
+  test("shows url and likes when clicked view", () => {
+    const viewButton = component.container.querySelector(".viewBtn")
     fireEvent.click(viewButton)
 
-    const div = component.container.querySelector('.blogDetails')
-    expect(div).toHaveStyle('display: block')
+    const div = component.container.querySelector(".blogDetails")
+    expect(div).toHaveStyle("display: block")
   })
 
-  test('like button works', () => {
-    const likeButton = component.container.querySelector('.likeBtn')
+  test("like button works", () => {
+    const likeButton = component.container.querySelector(".likeBtn")
     fireEvent.click(likeButton)
     fireEvent.click(likeButton)
 

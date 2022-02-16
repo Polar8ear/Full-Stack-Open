@@ -26,31 +26,30 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('login', (user) => {
-  const loginURL = 'http://localhost:3003/api/login'
+Cypress.Commands.add("login", (user) => {
+  const loginURL = "http://localhost:3003/api/login"
   cy.request({
     url: loginURL,
-    method: 'POST',
+    method: "POST",
     body: user,
+  }).then((response) => {
+    localStorage.setItem("user", JSON.stringify(response.body))
+    cy.wrap(response.body.token).as("token")
   })
-    .then((response) => {
-      localStorage.setItem('user', JSON.stringify(response.body))
-      cy.wrap(response.body.token).as('token')
-    })
 })
 
-Cypress.Commands.add('likeBlogOf', (blogToBeLiked) => {
-  cy.get('#blogs')
+Cypress.Commands.add("likeBlogOf", (blogToBeLiked) => {
+  cy.get("#blogs")
     .contains(blogToBeLiked.title)
     .within(function () {
-      cy.get('.likeBtn').click()
+      cy.get(".likeBtn").click()
     })
 })
 
-Cypress.Commands.add('viewBlogOf', (blogToBeViewed) => {
-  cy.get('#blogs')
+Cypress.Commands.add("viewBlogOf", (blogToBeViewed) => {
+  cy.get("#blogs")
     .contains(blogToBeViewed.title)
     .within(function () {
-      cy.get('.viewBtn').click()
+      cy.get(".viewBtn").click()
     })
 })

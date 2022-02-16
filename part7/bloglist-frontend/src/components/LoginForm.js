@@ -1,6 +1,6 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { changeUsername, changePassword } from '../reducers/userReducer'
+import React from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { changeUsername, changePassword } from "../reducers/userReducer"
 
 const LoginForm = ({ handleLogin }) => {
   const dispatch = useDispatch()
@@ -9,11 +9,12 @@ const LoginForm = ({ handleLogin }) => {
   const password = useSelector((state) => state.user.password)
 
   return (
-    <form onSubmit={(event) => {
-      handleLogin(event, username, password)
-      dispatch(changeUsername(''))
-      dispatch(changePassword(''))
-    }}
+    <form
+      onSubmit={(event) => {
+        handleLogin(event, username, password)
+        dispatch(changeUsername(""))
+        dispatch(changePassword(""))
+      }}
     >
       <div>
         <label htmlFor="username">

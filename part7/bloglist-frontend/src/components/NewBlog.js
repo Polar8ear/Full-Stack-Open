@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState } from "react"
 
 const NewBlog = ({ handleCreateBlog }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setURL] = useState('')
+  const [title, setTitle] = useState("")
+  const [author, setAuthor] = useState("")
+  const [url, setURL] = useState("")
 
   return (
-    <form onSubmit={(event) => {
-      handleCreateBlog(event, { title, author, url })
-      setTitle('')
-      setAuthor('')
-      setURL('')
-    }}
+    <form
+      onSubmit={(event) => {
+        handleCreateBlog(event, { title, author, url })
+        setTitle("")
+        setAuthor("")
+        setURL("")
+      }}
     >
       <div>
         <label htmlFor="title">
@@ -52,7 +53,9 @@ const NewBlog = ({ handleCreateBlog }) => {
         </label>
       </div>
 
-      <button id="createBtn" type="submit">Create</button>
+      <button id="createBtn" type="submit">
+        Create
+      </button>
     </form>
   )
 }

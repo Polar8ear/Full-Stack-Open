@@ -1,35 +1,35 @@
-import blogService from '../services/blogs'
+import blogService from "../services/blogs"
 
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
-  case 'SET_BLOGS':
-    return action.data.blogs
+    case "SET_BLOGS":
+      return action.data.blogs
 
-  case 'ADD_BLOG':
-    return state.concat(action.data.blog)
+    case '"ADD_BLOG"':
+      return state.concat(action.data.blog)
 
-  default:
-    return state
+    default:
+      return state
   }
 }
 
 const initialiseBlogs = () => async (dispatch) => {
   const blogs = await blogService.getAll()
   dispatch({
-    type: 'SET_BLOGS',
+    type: "SET_BLOGS",
     data: { blogs },
   })
 }
 
 const setBlogs = (blogs) => ({
-  type: 'SET_BLOGS',
+  type: "SET_BLOGS",
   data: { blogs },
 })
 
 const addBlog = (blog) => async (dispatch) => {
   const savedBlog = await blogService.create(blog)
   dispatch({
-    type: 'ADD_BLOG',
+    type: "ADD_BLOG",
     data: { blog: savedBlog },
   })
   return savedBlog
@@ -45,21 +45,22 @@ const likeBlog = (id) => async (dispatch, getState) => {
     return blog
   })
 
-  const updatedBlog = await blogService.update({
-    user: likedBlog.user.id,
-    likes: likedBlog.likes,
-    author: likedBlog.author,
-    url: likedBlog.url,
-    title: likedBlog.title,
-  }, likedBlog.id)
+  const updatedBlog = await blogService.update(
+    {
+      user: likedBlog.user.id,
+      likes: likedBlog.likes,
+      author: likedBlog.author,
+      url: likedBlog.url,
+      title: likedBlog.title,
+    },
+    likedBlog.id
+  )
 
   if (updatedBlog) {
     dispatch(setBlogs(updatedBlogs))
   }
 }
 
-export {
-  initialiseBlogs, addBlog, setBlogs, likeBlog,
-}
+export { initialiseBlogs, addBlog, setBlogs, likeBlog }
 
 export default blogsReducer
