@@ -4,6 +4,13 @@ import {
   addNotification,
   deleteNotification,
 } from "./reducers/notificationReducer"
+import {
+  addBlog,
+  deleteBlog,
+  initialiseBlogs,
+  likeBlog,
+  setBlogs,
+} from "./reducers/blogsReducer"
 
 import Blog from "./components/Blog"
 import NewBlog from "./components/NewBlog"
@@ -14,13 +21,6 @@ import Notification from "./components/Notification"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 import "./styles/App.css"
-import {
-  addBlog,
-  deleteBlog,
-  initialiseBlogs,
-  likeBlog,
-  setBlogs,
-} from "./reducers/blogsReducer"
 
 const App = () => {
   const dispatch = useDispatch()
