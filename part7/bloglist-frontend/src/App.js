@@ -11,7 +11,9 @@ import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './styles/App.css'
-import { addBlog, initialiseBlogs, setBlogs } from './reducers/blogsReducer'
+import {
+  addBlog, initialiseBlogs, likeBlog, setBlogs,
+} from './reducers/blogsReducer'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -98,22 +100,7 @@ const App = () => {
   }
 
   const handleLike = async (id) => {
-    const likedBlogIndex = blogs.findIndex((blog) => blog.id === id)
-    const copyBlog = [...blogs]
-    const likedBlog = copyBlog[likedBlogIndex]
-    likedBlog.likes += 1
-
-    const updatedBlog = await blogService.update({
-      user: likedBlog.user.id,
-      likes: likedBlog.likes,
-      author: likedBlog.author,
-      url: likedBlog.url,
-      title: likedBlog.title,
-    }, likedBlog.id)
-
-    if (updatedBlog) {
-      dispatch(setBlogs(copyBlog))
-    }
+    dispatch(likeBlog(id))
   }
 
   const handleDelete = async (deletingBlog) => {

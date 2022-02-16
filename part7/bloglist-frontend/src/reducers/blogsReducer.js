@@ -3,7 +3,6 @@ import blogService from '../services/blogs'
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
   case 'SET_BLOGS':
-  case 'INTIALISE_BLOGS':
     return action.data.blogs
 
   case 'ADD_BLOG':
@@ -17,7 +16,7 @@ const blogsReducer = (state = [], action) => {
 const initialiseBlogs = () => async (dispatch) => {
   const blogs = await blogService.getAll()
   dispatch({
-    type: 'INTIALISE_BLOGS',
+    type: 'SET_BLOGS',
     data: { blogs },
   })
 }
@@ -36,6 +35,31 @@ const addBlog = (blog) => async (dispatch) => {
   return savedBlog
 }
 
-export { initialiseBlogs, addBlog, setBlogs }
+const likeBlog = (id) => async (dispatch, getState) => {
+  let likedBlog
+  const updatedBlogs = getState().blogs.map((blog) => {
+    if (blog.id === id) {
+      likedBlog = blog
+      likedBlog.likes += 1
+    }
+    return blog
+  })
+
+  const updatedBlog = await blogService.update({
+    user: likedBlog.user.id,
+    likes: likedBlog.likes,
+    author: likedBlog.author,
+    url: likedBlog.url,
+    title: likedBlog.title,
+  }, likedBlog.id)
+
+  if (updatedBlog) {
+    dispatch(setBlogs(updatedBlogs))
+  }
+}
+
+export {
+  initialiseBlogs, addBlog, setBlogs, likeBlog,
+}
 
 export default blogsReducer
