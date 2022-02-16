@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import {
   addNotification,
@@ -11,6 +11,11 @@ import {
   likeBlog,
   setBlogs,
 } from "./reducers/blogsReducer"
+import {
+  initialiseUserInLocalStorage,
+  loginUser,
+  logoutUser,
+} from "./reducers/userReducer"
 
 import Blog from "./components/Blog"
 import NewBlog from "./components/NewBlog"
@@ -18,21 +23,20 @@ import LoginForm from "./components/LoginForm"
 import Togglable from "./components/Togglable"
 import Notification from "./components/Notification"
 
-import blogService from "./services/blogs"
-import loginService from "./services/login"
 import "./styles/App.css"
 
 const App = () => {
   const dispatch = useDispatch()
 
   const blogs = useSelector((state) => state.blogs)
-  const [user, setUser] = useState(null)
+  const user = useSelector((state) => state.user)
   const notification = useSelector((state) => state.notification)
   const newBlogRef = useRef()
 
-  // load blogs upon starting
+  // load blogs and user if in local storage upon starting
   useEffect(() => {
     dispatch(initialiseBlogs())
+    dispatch(initialiseUserInLocalStorage)
   }, [])
 
   useEffect(() => {
@@ -44,17 +48,6 @@ const App = () => {
       dispatch(setBlogs(sortedBlogs))
     }
   }, [blogs])
-
-  // check if there is user data stored in local storage
-  useEffect(() => {
-    const userDetails = window.localStorage.getItem("user")
-
-    if (userDetails) {
-      const parsedUser = JSON.parse(userDetails)
-      setUser(parsedUser)
-      blogService.setToken(parsedUser.token)
-    }
-  }, [])
 
   const showNotification = (notificationData) => {
     dispatch(addNotification(notificationData))
@@ -70,22 +63,16 @@ const App = () => {
       username,
       password,
     }
-    try {
-      const userDetails = await loginService.login(credentials)
-      window.localStorage.setItem("user", JSON.stringify(userDetails))
-      setUser(userDetails)
-      blogService.setToken(userDetails.token)
-    } catch (error) {
+    dispatch(loginUser(credentials)).catch(() => {
       showNotification({
         style: "error",
         text: "Invalid username or password",
       })
-    }
+    })
   }
 
   const handleLogout = () => {
-    setUser(null)
-    window.localStorage.removeItem("user")
+    dispatch(logoutUser())
   }
 
   const handleCreateBlog = (event, newBlog) => {
