@@ -11,7 +11,8 @@ module.exports = {
       "eslint:recommended",
       "plugin:react/recommended",
       "airbnb",
-      "plugin:cypress/recommended"
+      "plugin:cypress/recommended",
+      "plugin:prettier/recommended"
   ],
   "parserOptions": {
       "ecmaFeatures": {
@@ -24,35 +25,35 @@ module.exports = {
       "react", "jest", "cypress"
   ],
   "rules": {
-      "indent": [
-          "error",
-          2  
-      ],
-      "linebreak-style": [
-          "error",
-          "unix"
-      ],
-      "quotes": [
-          "error",
-          "single"
-      ],
-      "semi": [
-          "error",
-          "never"
-      ],
-      "eqeqeq": "error",
-      "no-trailing-spaces": "error",
-      "object-curly-spacing": [
-          "error", "always"
-      ],
-      "arrow-spacing": [
-          "error", { "before": true, "after": true }
-      ],
-      "no-console": 0,
+      // "indent": [
+      //     "error",
+      //     2  
+      // ],
+      // "linebreak-style": [
+      //     "error",
+      //     "unix"
+      // ],
+      // "quotes": [
+      //     "error",
+      //     "single"
+      // ],
+      // "semi": [
+      //     "error",
+      //     "never"
+      // ],
+      // "eqeqeq": "error",
+      // "no-trailing-spaces": "error",
+      // "object-curly-spacing": [
+      //     "error", "always"
+      // ],
+      // "arrow-spacing": [
+      //     "error", { "before": true, "after": true }
+      // ],
+      // "no-console": 0,
       "no-alert": 0,
       "react/prop-types": 0,
       "react/jsx-filename-extension": 0,
-      "react/jsx-props-no-spreading": 0
+      "react/jsx-props-no-spreading": 0,
   },
   "settings": {
     "react": {
