@@ -16,6 +16,7 @@ import loginService from "./services/login"
 import "./styles/App.css"
 import {
   addBlog,
+  deleteBlog,
   initialiseBlogs,
   likeBlog,
   setBlogs,
@@ -120,13 +121,7 @@ const App = () => {
       return
     }
 
-    const status = await blogService.remove(deletingBlog.id)
-    if (status === 204) {
-      const remainingBlogs = [...blogs].filter(
-        (blog) => blog.id !== deletingBlog.id
-      )
-      dispatch(setBlogs(remainingBlogs))
-    }
+    dispatch(deleteBlog(deletingBlog.id))
   }
 
   if (!user) {

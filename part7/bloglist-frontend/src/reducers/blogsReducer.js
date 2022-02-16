@@ -61,6 +61,15 @@ const likeBlog = (id) => async (dispatch, getState) => {
   }
 }
 
-export { initialiseBlogs, addBlog, setBlogs, likeBlog }
+const deleteBlog = (id) => async (dispatch, getState) => {
+  const updatedBlogs = getState().blogs.filter((blog) => blog.id !== id)
+  const deleteResponseStatus = await blogService.remove(id)
+
+  if (deleteResponseStatus === 204) {
+    dispatch(setBlogs(updatedBlogs))
+  }
+}
+
+export { initialiseBlogs, addBlog, setBlogs, likeBlog, deleteBlog }
 
 export default blogsReducer
