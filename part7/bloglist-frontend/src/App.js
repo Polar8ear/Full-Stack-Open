@@ -13,6 +13,7 @@ import LoginForm from "./components/LoginForm"
 import Notification from "./components/Notification"
 
 import Blogs from "./pages/Blogs"
+import Users from "./pages/Users"
 
 import "./styles/App.css"
 
@@ -81,6 +82,7 @@ const App = () => {
       </div>
       <Routes>
         <Route path="/" element={<Blogs />} />
+        <Route path="/users" element={<Users />} />
       </Routes>
     </div>
   )
