@@ -16,6 +16,7 @@ import Blogs from "./pages/Blogs"
 import Users from "./pages/Users"
 
 import "./styles/App.css"
+import { initialiseUsers } from "./reducers/usersReducer"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -24,11 +25,16 @@ const App = () => {
   const user = useSelector((state) => state.user)
   const notification = useSelector((state) => state.notification)
 
-  // load blogs and user if in local storage upon starting
   useEffect(() => {
-    dispatch(initialiseBlogs())
-    dispatch(initialiseUserInLocalStorage)
-  }, [])
+    dispatch(initialiseUserInLocalStorage())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (user) {
+      dispatch(initialiseBlogs())
+      dispatch(initialiseUsers())
+    }
+  }, [dispatch, user])
 
   useEffect(() => {
     const sortedBlogs = blogs
