@@ -20,6 +20,13 @@ const deleteNotification = () => ({
   type: "DELETE_NOTIFICATION",
 })
 
-export { addNotification, deleteNotification }
+const showNotification = (notification) => (dispatch) => {
+  dispatch(addNotification(notification))
+  setTimeout(() => {
+    dispatch(deleteNotification())
+  }, 3000)
+}
+
+export { addNotification, deleteNotification, showNotification }
 
 export default notificationReducer
