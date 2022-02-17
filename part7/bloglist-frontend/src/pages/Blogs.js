@@ -40,11 +40,11 @@ const Blogs = () => {
     dispatch(setBlogs(copyBlog))
   }
 
-  const handleLike = async (id) => {
+  const handleLike = (id) => {
     dispatch(likeBlog(id))
   }
 
-  const handleDelete = async (deletingBlog) => {
+  const handleDelete = (deletingBlog) => {
     const confirmation = window.confirm(
       `Remove blog ${deletingBlog.title} by ${deletingBlog.author}`
     )
