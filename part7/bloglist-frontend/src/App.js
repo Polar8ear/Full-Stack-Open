@@ -1,10 +1,7 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Routes, Route } from "react-router-dom"
-import {
-  addNotification,
-  deleteNotification,
-} from "./reducers/notificationReducer"
+import { showNotification } from "./reducers/notificationReducer"
 import { initialiseBlogs, setBlogs } from "./reducers/blogsReducer"
 import {
   initialiseUserInLocalStorage,
@@ -42,13 +39,6 @@ const App = () => {
     }
   }, [blogs])
 
-  const showNotification = (notificationData) => {
-    dispatch(addNotification(notificationData))
-    setTimeout(() => {
-      dispatch(deleteNotification())
-    }, 3500)
-  }
-
   const handleLogin = async (event, username, password) => {
     event.preventDefault()
 
@@ -57,10 +47,12 @@ const App = () => {
       password,
     }
     dispatch(loginUser(credentials)).catch(() => {
-      showNotification({
-        style: "error",
-        text: "Invalid username or password",
-      })
+      dispatch(
+        showNotification({
+          style: "error",
+          text: "Invalid username or password",
+        })
+      )
     })
   }
 
