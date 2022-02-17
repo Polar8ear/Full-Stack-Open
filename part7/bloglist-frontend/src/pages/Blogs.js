@@ -12,7 +12,7 @@ import Blog from "../components/Blog"
 import NewBlog from "../components/NewBlog"
 
 const Blogs = () => {
-  const dispatch = useDispatch
+  const dispatch = useDispatch()
   const blogs = useSelector((state) => state.blogs)
   const user = useSelector((state) => state.user)
   const newBlogRef = useRef()
