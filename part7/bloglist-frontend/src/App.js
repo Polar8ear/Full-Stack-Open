@@ -1,27 +1,21 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { Routes, Route } from "react-router-dom"
 import {
   addNotification,
   deleteNotification,
 } from "./reducers/notificationReducer"
-import {
-  addBlog,
-  deleteBlog,
-  initialiseBlogs,
-  likeBlog,
-  setBlogs,
-} from "./reducers/blogsReducer"
+import { initialiseBlogs, setBlogs } from "./reducers/blogsReducer"
 import {
   initialiseUserInLocalStorage,
   loginUser,
   logoutUser,
 } from "./reducers/userReducer"
 
-import Blog from "./components/Blog"
-import NewBlog from "./components/NewBlog"
 import LoginForm from "./components/LoginForm"
-import Togglable from "./components/Togglable"
 import Notification from "./components/Notification"
+
+import Blogs from "./pages/Blogs"
 
 import "./styles/App.css"
 
@@ -31,7 +25,6 @@ const App = () => {
   const blogs = useSelector((state) => state.blogs)
   const user = useSelector((state) => state.user)
   const notification = useSelector((state) => state.notification)
-  const newBlogRef = useRef()
 
   // load blogs and user if in local storage upon starting
   useEffect(() => {
@@ -75,42 +68,6 @@ const App = () => {
     dispatch(logoutUser())
   }
 
-  const handleCreateBlog = (event, newBlog) => {
-    event.preventDefault()
-    newBlogRef.current.toggleVisibility()
-
-    dispatch(addBlog(newBlog)).then((savedBlog) =>
-      showNotification({
-        style: "success",
-        text: `a new blog '${savedBlog.title}' by ${savedBlog.author} added `,
-      })
-    )
-  }
-
-  const handleClickView = (id) => {
-    const clickedBlogIndex = blogs.findIndex((blog) => blog.id === id)
-    const copyBlog = [...blogs]
-    copyBlog[clickedBlogIndex].showDetails =
-      !copyBlog[clickedBlogIndex].showDetails
-
-    dispatch(setBlogs(copyBlog))
-  }
-
-  const handleLike = async (id) => {
-    dispatch(likeBlog(id))
-  }
-
-  const handleDelete = async (deletingBlog) => {
-    const confirmation = window.confirm(
-      `Remove blog ${deletingBlog.title} by ${deletingBlog.author}`
-    )
-    if (!confirmation) {
-      return
-    }
-
-    dispatch(deleteBlog(deletingBlog.id))
-  }
-
   if (!user) {
     return (
       <div>
@@ -130,22 +87,9 @@ const App = () => {
           Logout
         </button>
       </div>
-
-      <Togglable buttonLabel="Create New Blog" ref={newBlogRef}>
-        <h2>Create new blog</h2>
-        <NewBlog handleCreateBlog={handleCreateBlog} />
-      </Togglable>
-
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleClickView={handleClickView}
-          handleLike={handleLike}
-          handleDelete={handleDelete}
-          user={user}
-        />
-      ))}
+      <Routes>
+        <Route path="/" element={<Blogs />} />
+      </Routes>
     </div>
   )
 }
