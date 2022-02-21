@@ -14,6 +14,7 @@ import Notification from "./components/Notification"
 
 import Blogs from "./pages/Blogs"
 import Users from "./pages/Users"
+import User from "./pages/User"
 
 import "./styles/App.css"
 import { initialiseUsers } from "./reducers/usersReducer"
@@ -89,6 +90,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Blogs />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/users/:userId" element={<User />} />
       </Routes>
     </div>
   )
