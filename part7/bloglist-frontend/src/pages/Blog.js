@@ -23,7 +23,7 @@ const User = () => {
     <div>
       <h2>{selectedBlog.name}</h2>
       <h2>{selectedBlog.author}</h2>
-      <a href={selectedBlog.url}>{selectedBlog.url}</a>
+      <a href={`//${selectedBlog.url}`}>{selectedBlog.url}</a>
       <div>
         {selectedBlog.likes} likes
         <button type="button" onClick={() => handleLikeBlog(selectedBlog.id)}>
