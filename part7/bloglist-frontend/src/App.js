@@ -12,6 +12,7 @@ import {
 import LoginForm from "./components/LoginForm"
 import Notification from "./components/Notification"
 
+import Blog from "./pages/Blog"
 import Blogs from "./pages/Blogs"
 import Users from "./pages/Users"
 import User from "./pages/User"
@@ -89,6 +90,7 @@ const App = () => {
       </div>
       <Routes>
         <Route path="/" element={<Blogs />} />
+        <Route path="/blogs/:blogId" element={<Blog />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:userId" element={<User />} />
       </Routes>
