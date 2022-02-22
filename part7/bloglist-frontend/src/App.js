@@ -3,14 +3,11 @@ import { useDispatch, useSelector } from "react-redux"
 import { Routes, Route } from "react-router-dom"
 import { showNotification } from "./reducers/notificationReducer"
 import { initialiseBlogs, setBlogs } from "./reducers/blogsReducer"
-import {
-  initialiseUserInLocalStorage,
-  loginUser,
-  logoutUser,
-} from "./reducers/userReducer"
+import { initialiseUserInLocalStorage, loginUser } from "./reducers/userReducer"
 
-import LoginForm from "./components/LoginForm"
 import Notification from "./components/Notification"
+import Header from "./components/Header"
+import LoginForm from "./components/LoginForm"
 
 import Blog from "./pages/Blog"
 import Blogs from "./pages/Blogs"
@@ -65,10 +62,6 @@ const App = () => {
     })
   }
 
-  const handleLogout = () => {
-    dispatch(logoutUser())
-  }
-
   if (!user) {
     return (
       <div>
@@ -81,13 +74,7 @@ const App = () => {
   return (
     <div>
       <Notification notification={notification} />
-      <h2>Blogs</h2>
-      <div>
-        {user.name} is logged in
-        <button type="button" onClick={handleLogout}>
-          Logout
-        </button>
-      </div>
+      <Header />
       <Routes>
         <Route path="/" element={<Blogs />} />
         <Route path="/blogs/:blogId" element={<Blog />} />
