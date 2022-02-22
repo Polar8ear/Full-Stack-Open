@@ -31,6 +31,13 @@ const User = () => {
         </button>
       </div>
       <p>Added by {selectedBlog.user.name}</p>
+
+      <h3>Comments</h3>
+      <ul>
+        {selectedBlog.comments.map((comment) => (
+          <li>{comment}</li>
+        ))}
+      </ul>
     </div>
   )
 }
