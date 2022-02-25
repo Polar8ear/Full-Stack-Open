@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom"
 import { showNotification } from "./reducers/notificationReducer"
 import { initialiseBlogs, setBlogs } from "./reducers/blogsReducer"
 import { initialiseUserInLocalStorage, loginUser } from "./reducers/userReducer"
+import { initialiseUsers } from "./reducers/usersReducer"
 
 import Notification from "./components/Notification"
 import Header from "./components/Header"
@@ -15,7 +16,6 @@ import Users from "./pages/Users"
 import User from "./pages/User"
 
 import "./styles/App.css"
-import { initialiseUsers } from "./reducers/usersReducer"
 
 const App = () => {
   const dispatch = useDispatch()
