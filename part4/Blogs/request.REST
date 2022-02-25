@@ -1,0 +1,15 @@
+PUT  http://localhost:3000/api/blogs/6107c0cc3ea2bb34f443cdc3 HTTP/1.1
+Content-Type: application/json
+
+{"user":"6107c07c0b19f837ec54a3d1","likes":70,"author":"sample author 1","url":"sampleurl.com","title":"sample title 1",
+  "comments":["Hello", "Hi Amigo", "Test"]
+}
+
+###
+
+POST http://localhost:3000/api/blogs/6107c0cc3ea2bb34f443cdc3/comments HTTP/1.1
+Content-Type: application/json
+
+{
+  "comment": "Yoooohoooo"
+}
