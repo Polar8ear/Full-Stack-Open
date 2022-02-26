@@ -1,6 +1,11 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+
+import Navbar from "react-bootstrap/Navbar"
+import Nav from "react-bootstrap/Nav"
+import Button from "react-bootstrap/Button"
+
 import { logoutUser } from "../reducers/userReducer"
 
 const Header = () => {
@@ -12,22 +17,21 @@ const Header = () => {
   }
 
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Blogs</Link>
-        </li>
-        <li>
-          <Link to="/users">Users</Link>
-        </li>
-        <li>
-          {user.name} is logged in
-          <button type="button" onClick={handleLogout}>
-            Logout
-          </button>
-        </li>
-      </ul>
-    </nav>
+    <Navbar bg="light" className="px-4 gap-2">
+      <Navbar.Brand>Blog List App</Navbar.Brand>
+      <Nav.Link as={Link} to="/">
+        Blogs
+      </Nav.Link>
+      <Nav.Link as={Link} to="/users">
+        Users
+      </Nav.Link>
+      <Nav.Item className="ms-auto">{user.name} is logged in</Nav.Item>
+      <Nav.Item>
+        <Button type="button" onClick={handleLogout} className="mr-1">
+          Logout
+        </Button>
+      </Nav.Item>
+    </Navbar>
   )
 }
 
