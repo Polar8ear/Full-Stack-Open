@@ -70,6 +70,17 @@ const deleteBlog = (id) => async (dispatch, getState) => {
   }
 }
 
-export { initialiseBlogs, addBlog, setBlogs, likeBlog, deleteBlog }
+const addComment = (id, comment) => async (dispatch, getState) => {
+  const updatedBlog = await blogService.addComment(id, comment)
+
+  if (updatedBlog) {
+    const updatedBlogs = getState().blogs.map((blog) =>
+      blog.id === id ? updatedBlog : blog
+    )
+    dispatch(setBlogs(updatedBlogs))
+  }
+}
+
+export { initialiseBlogs, addBlog, setBlogs, likeBlog, deleteBlog, addComment }
 
 export default blogsReducer
