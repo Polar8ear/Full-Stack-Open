@@ -1,9 +1,11 @@
-import React from "react"
+import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
-import { likeBlog } from "../reducers/blogsReducer"
+import { addComment, likeBlog } from "../reducers/blogsReducer"
 
 const User = () => {
+  const [newComment, setNewComment] = useState("")
+
   const dispatch = useDispatch()
   const params = useParams()
   const blogs = useSelector((state) => state.blogs)
@@ -13,6 +15,11 @@ const User = () => {
 
   const handleLikeBlog = () => {
     dispatch(likeBlog(id))
+  }
+
+  const handleAddComment = (event) => {
+    event.preventDefault()
+    dispatch(addComment(id, newComment))
   }
 
   if (!selectedBlog) {
@@ -33,9 +40,18 @@ const User = () => {
       <p>Added by {selectedBlog.user.name}</p>
 
       <h3>Comments</h3>
+      <form onSubmit={handleAddComment}>
+        <input
+          onChange={(event) => setNewComment(event.target.value)}
+          value={newComment}
+        />
+        <button type="submit" action>
+          Add comment
+        </button>
+      </form>
       <ul>
-        {selectedBlog.comments.map((comment) => (
-          <li>{comment}</li>
+        {selectedBlog.comments.map((blogComment) => (
+          <li>{blogComment}</li>
         ))}
       </ul>
     </div>
