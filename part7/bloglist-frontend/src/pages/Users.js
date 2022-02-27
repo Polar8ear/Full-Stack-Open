@@ -2,6 +2,9 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
+import Container from "react-bootstrap/Container"
+import Table from "react-bootstrap/Table"
+
 const Users = () => {
   const users = useSelector((state) => state.users)
 
@@ -10,13 +13,14 @@ const Users = () => {
   }
 
   return (
-    <div>
+    <Container className="w-50 mx-auto">
       <h2>Users</h2>
-      <table>
+      <hr />
+      <Table striped bordered hover className="">
         <thead>
           <tr>
-            <th> </th>
-            <th>Blogs created</th>
+            <th>Username</th>
+            <th>Number of blogs created</th>
           </tr>
         </thead>
         <tbody>
@@ -31,8 +35,8 @@ const Users = () => {
             )
           })}
         </tbody>
-      </table>
-    </div>
+      </Table>
+    </Container>
   )
 }
 

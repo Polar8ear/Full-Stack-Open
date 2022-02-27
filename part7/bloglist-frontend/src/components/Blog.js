@@ -1,34 +1,22 @@
-import React, { useState } from "react"
+import React from "react"
+
+import Accordion from "react-bootstrap/Accordion"
+import Button from "react-bootstrap/Button"
 import { Link } from "react-router-dom"
 
 const Blog = ({ blog, handleLike, handleDelete, user }) => {
-  const [showDetails, setShowDetails] = useState(false)
-  const buttonLabel = showDetails ? "close" : "view"
-  const showWhenVisible = { display: showDetails ? "" : "none" }
-
-  const toggleShowDetails = () => setShowDetails(!showDetails)
-
   const showWhenUserMatch = {
     display: blog.user.username === user.username ? "" : "none",
   }
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  }
-
   return (
-    <div style={blogStyle}>
-      <Link to={`/blogs/${blog.id}`}>
-        {blog.title} {blog.author}
-      </Link>
-      <button type="button" className="viewBtn" onClick={toggleShowDetails}>
-        {buttonLabel}
-      </button>
-      <div className="blogDetails" style={showWhenVisible}>
+    <Accordion.Item eventKey={blog.id}>
+      <Accordion.Header>
+        <span>
+          {blog.title} <i>by</i> {blog.author}
+        </span>
+      </Accordion.Header>
+      <Accordion.Body>
         <p>
           URL:
           {blog.url}
@@ -38,28 +26,32 @@ const Blog = ({ blog, handleLike, handleDelete, user }) => {
           Likes:
           {blog.likes}
         </p>
-        <button
+        <Button
           type="button"
-          className="likeBtn"
+          variant="primary"
+          className="likeBtn me-3"
           onClick={() => handleLike(blog.id)}
         >
           Like
-        </button>
-
+        </Button>
+        <Button variant="primary" as={Link} to={`/blogs/${blog.id}`}>
+          Details
+        </Button>
         <p>
           Author:
           {blog.author}
         </p>
 
-        <button
+        <Button
           type="button"
+          variant="danger"
           style={showWhenUserMatch}
           onClick={() => handleDelete(blog)}
         >
           Remove
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Accordion.Body>
+    </Accordion.Item>
   )
 }
 
