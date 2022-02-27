@@ -27,7 +27,12 @@ const Header = () => {
       </Nav.Link>
       <Nav.Item className="ms-auto">{user.name} is logged in</Nav.Item>
       <Nav.Item>
-        <Button type="button" onClick={handleLogout} className="mr-1">
+        <Button
+          type="button"
+          variant="primary"
+          onClick={handleLogout}
+          className="mr-1"
+        >
           Logout
         </Button>
       </Nav.Item>
