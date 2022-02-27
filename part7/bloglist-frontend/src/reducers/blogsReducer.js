@@ -28,10 +28,12 @@ const setBlogs = (blogs) => ({
 
 const addBlog = (blog) => async (dispatch) => {
   const savedBlog = await blogService.create(blog)
-  dispatch({
-    type: "ADD_BLOG",
-    data: { blog: savedBlog },
-  })
+  if (savedBlog) {
+    dispatch({
+      type: "ADD_BLOG",
+      data: { blog: savedBlog },
+    })
+  }
   return savedBlog
 }
 
