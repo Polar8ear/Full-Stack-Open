@@ -1,13 +1,11 @@
-import React, { useRef } from "react"
+import React from "react"
 import { useDispatch, useSelector } from "react-redux"
-import {
-  setBlogs,
-  likeBlog,
-  addBlog,
-  deleteBlog,
-} from "../reducers/blogsReducer"
-import { showNotification } from "../reducers/notificationReducer"
-import Togglable from "../components/Togglable"
+
+import Container from "react-bootstrap/Container"
+import Accordion from "react-bootstrap/Accordion"
+import Row from "react-bootstrap/Row"
+
+import { setBlogs, likeBlog, deleteBlog } from "../reducers/blogsReducer"
 import Blog from "../components/Blog"
 import NewBlog from "../components/NewBlog"
 
@@ -15,21 +13,6 @@ const Blogs = () => {
   const dispatch = useDispatch()
   const blogs = useSelector((state) => state.blogs)
   const user = useSelector((state) => state.user)
-  const newBlogRef = useRef()
-
-  const handleCreateBlog = (event, newBlog) => {
-    event.preventDefault()
-    newBlogRef.current.toggleVisibility()
-
-    dispatch(addBlog(newBlog)).then((savedBlog) =>
-      dispatch(
-        showNotification({
-          style: "success",
-          text: `a new blog '${savedBlog.title}' by ${savedBlog.author} added `,
-        })
-      )
-    )
-  }
 
   const handleClickView = (id) => {
     const clickedBlogIndex = blogs.findIndex((blog) => blog.id === id)
@@ -56,22 +39,26 @@ const Blogs = () => {
   }
 
   return (
-    <div>
-      <Togglable buttonLabel="Create New Blog" ref={newBlogRef}>
-        <h2>Create new blog</h2>
-        <NewBlog handleCreateBlog={handleCreateBlog} />
-      </Togglable>
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleClickView={handleClickView}
-          handleLike={handleLike}
-          handleDelete={handleDelete}
-          user={user}
-        />
-      ))}
-    </div>
+    <Container>
+      <Row className="w-50 mx-auto">
+        <NewBlog />
+      </Row>
+
+      <Row className="w-50 mx-auto">
+        <Accordion>
+          {blogs.map((blog) => (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleClickView={handleClickView}
+              handleLike={handleLike}
+              handleDelete={handleDelete}
+              user={user}
+            />
+          ))}
+        </Accordion>
+      </Row>
+    </Container>
   )
 }
 

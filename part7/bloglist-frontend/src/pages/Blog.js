@@ -1,6 +1,11 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
+
+import Container from "react-bootstrap/Container"
+import Button from "react-bootstrap/Button"
+import Form from "react-bootstrap/Form"
+
 import { addComment, likeBlog } from "../reducers/blogsReducer"
 
 const User = () => {
@@ -20,6 +25,7 @@ const User = () => {
   const handleAddComment = (event) => {
     event.preventDefault()
     dispatch(addComment(id, newComment))
+    setNewComment("")
   }
 
   if (!selectedBlog) {
@@ -27,34 +33,40 @@ const User = () => {
   }
 
   return (
-    <div>
-      <h2>{selectedBlog.name}</h2>
-      <h2>{selectedBlog.author}</h2>
+    <Container className="w-50 mx-auto">
+      <h2>{selectedBlog.title}</h2>
+      <h5>{selectedBlog.author}</h5>
+      <hr />
       <a href={`//${selectedBlog.url}`}>{selectedBlog.url}</a>
       <div>
         {selectedBlog.likes} likes
-        <button type="button" onClick={() => handleLikeBlog(selectedBlog.id)}>
+        <Button
+          type="button"
+          onClick={() => handleLikeBlog(selectedBlog.id)}
+          className="ms-2"
+        >
           Like
-        </button>
+        </Button>
       </div>
       <p>Added by {selectedBlog.user.name}</p>
 
       <h3>Comments</h3>
-      <form onSubmit={handleAddComment}>
-        <input
+      <Form onSubmit={handleAddComment}>
+        <Form.Control
           onChange={(event) => setNewComment(event.target.value)}
           value={newComment}
+          className="my-3"
         />
-        <button type="submit" action>
+        <Button type="submit" className="my-3">
           Add comment
-        </button>
-      </form>
+        </Button>
+      </Form>
       <ul>
         {selectedBlog.comments.map((blogComment) => (
           <li>{blogComment}</li>
         ))}
       </ul>
-    </div>
+    </Container>
   )
 }
 

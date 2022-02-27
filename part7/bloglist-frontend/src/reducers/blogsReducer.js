@@ -5,7 +5,7 @@ const blogsReducer = (state = [], action) => {
     case "SET_BLOGS":
       return action.data.blogs
 
-    case '"ADD_BLOG"':
+    case "ADD_BLOG":
       return state.concat(action.data.blog)
 
     default:
@@ -28,10 +28,12 @@ const setBlogs = (blogs) => ({
 
 const addBlog = (blog) => async (dispatch) => {
   const savedBlog = await blogService.create(blog)
-  dispatch({
-    type: "ADD_BLOG",
-    data: { blog: savedBlog },
-  })
+  if (savedBlog) {
+    dispatch({
+      type: "ADD_BLOG",
+      data: { blog: savedBlog },
+    })
+  }
   return savedBlog
 }
 
